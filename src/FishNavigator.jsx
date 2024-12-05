@@ -18,25 +18,36 @@ function FishNavigator(props) {
       const mouse = new THREE.Vector2(
         (event.clientX / window.innerWidth) * 2 - 1,
         -(event.clientY / window.innerHeight) * 2 + 1
-      )
-
-      const raycaster = new THREE.Raycaster()
-      raycaster.setFromCamera(mouse, camera)
-
-      const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0) // y = 0 plane
-      const intersectPoint = new THREE.Vector3(0,-40,0)
-      raycaster.ray.intersectPlane(plane, intersectPoint)
-
-      setTargetPosition(intersectPoint)
-      ref.current.lookAt(intersectPoint.x, intersectPoint.y, intersectPoint.z)
-    }
-
-    gl.domElement.addEventListener('mousemove', handleMouseMove)
-
+      );
+  
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(mouse, camera);
+  
+      const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0); // y = 0 plane
+      const intersectPoint = new THREE.Vector3(0, -40, 0);
+      raycaster.ray.intersectPlane(plane, intersectPoint);
+  
+      // Calculate the distance from the camera to the intersection point
+      const cameraPosition = camera.position.clone();
+      const distanceToTarget = cameraPosition.distanceTo(intersectPoint);
+  
+      // Define a maximum distance threshold
+      const maxDistance = 100; // Adjust based on your scene scale
+  
+      // Update targetPosition only if within the threshold
+      if (distanceToTarget <= maxDistance) {
+        setTargetPosition(intersectPoint);
+        ref.current.lookAt(intersectPoint.x, intersectPoint.y, intersectPoint.z);
+      }
+    };
+  
+    gl.domElement.addEventListener('mousemove', handleMouseMove);
+  
     return () => {
-      gl.domElement.removeEventListener('mousemove', handleMouseMove)
-    }
-  }, [camera, gl])
+      gl.domElement.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [camera, gl]);
+  
 
   const playLastPartOfSwim = () => {
     const swimAction = actions['swim']
@@ -66,32 +77,58 @@ function FishNavigator(props) {
   
 
   useFrame((_, delta) => {
-    if (!ref.current) return
+    if (!ref.current) return;
   
-    const currentPosition = ref.current.position
-    const direction = new THREE.Vector3().subVectors(targetPosition, currentPosition)
-    const distance = direction.length()
-    const moveDistance = Math.min(distance, delta * 10) // Adjust speed
+    // Fish movement logic (unchanged)
+    const currentPosition = ref.current.position;
+    const direction = new THREE.Vector3().subVectors(targetPosition, currentPosition);
+    const distance = direction.length();
+    const moveDistance = Math.min(distance, delta * 10); // Adjust speed
   
     if (distance > 0.1) {
       if (!isMoving) {
-        playLastPartOfSwim() // Play and loop the last 1.36 seconds of the swim animation
-        setIsMoving(true)
+        playLastPartOfSwim(); // Play and loop the last 1.36 seconds of the swim animation
+        setIsMoving(true);
       }
   
-      direction.normalize()
-      currentPosition.addScaledVector(direction, moveDistance)
+      direction.normalize();
+      currentPosition.addScaledVector(direction, moveDistance);
     } else {
       if (isMoving) {
-        const swimAction = actions['swim']
-        const mixer = swimAction?.getMixer()
-        mixer?.removeEventListener('loop') // Clean up to prevent stacking
-        swimAction?.stop()
-        actions['idle']?.reset().play()
-        setIsMoving(false)
+        const swimAction = actions['swim'];
+        const mixer = swimAction?.getMixer();
+        mixer?.removeEventListener('loop'); // Clean up to prevent stacking
+        swimAction?.stop();
+        actions['idle']?.reset().play();
+        setIsMoving(false);
       }
     }
-  })
+  
+    // Camera rotation based on fish proximity to screen edges
+    const screenPosition = currentPosition.clone().project(camera);
+  
+    // Normalize screenPosition.x to [0, 1]
+    const screenX = (screenPosition.x + 1) / 2;
+  
+    // Define edge thresholds (e.g., 10% from each side)
+    const edgeThreshold = 0.2;
+  
+    // Target camera rotation
+    let targetYRotation = camera.rotation.y;
+  
+    if (screenX < edgeThreshold) {
+      // Rotate slightly to the left
+      targetYRotation += 0.05; // Adjust target angle change as needed
+    } else if (screenX > 1 - edgeThreshold) {
+      // Rotate slightly to the right
+      targetYRotation -= 0.05; // Adjust target angle change as needed
+    }
+  
+    // Smooth rotation using lerp
+    camera.rotation.y = THREE.MathUtils.lerp(camera.rotation.y, targetYRotation, 0.1); // 0.1 is the smoothing factor
+  });
+  
+  
   
 
   return <primitive ref={ref} object={scene} {...props} />
