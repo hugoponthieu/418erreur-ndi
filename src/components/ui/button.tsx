@@ -1,5 +1,5 @@
 import * as React from "react";
-import confetti from "canvas-confetti";
+import confetti, { Options } from "canvas-confetti";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 
@@ -80,6 +80,7 @@ const RetroButton = React.forwardRef<HTMLButtonElement, RetroButtonProps>(
           particleCount: 3,
           startVelocity: 10,
           spread: 100,
+          flat: true,
           scalar: 2,
           disableForReducedMotion: true,
           shapes: [plus_one],
@@ -87,7 +88,7 @@ const RetroButton = React.forwardRef<HTMLButtonElement, RetroButtonProps>(
             x: e.clientX / window.innerWidth,
             y: e.clientY / window.innerHeight,
           },
-        });
+        } as Options);
       }
     };
     return (
