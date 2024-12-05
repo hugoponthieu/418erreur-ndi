@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+import plugin from "tailwindcss-animate";
 export default {
   darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -13,7 +14,7 @@ export default {
         pressstart: ['"Press Start 2P"', "cursive"],
       },
       backgroundImage: {
-        deepwater: "url(./src/assets/background.png)",
+        deepwater: "url(/background.png)",
       },
       colors: {
         background: "hsl(var(--background))",
@@ -62,5 +63,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [plugin],
 };

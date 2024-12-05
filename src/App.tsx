@@ -23,7 +23,7 @@ function App() {
   return (
     <div className="bg-blue-950 bg-deepwater h-dvh flex flex-col items-center justify-center w-full bg-cover text-white font-pressstart">
       <a
-        href="https://x.com/not_a_shower"
+        href="https://x.com/not_a_shower_zob"
         className="text-gray-500 text-[10px] md:text-sm hover:underline pt-4"
       >
         @not_a_shower
