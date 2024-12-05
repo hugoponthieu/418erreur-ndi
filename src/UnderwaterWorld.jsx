@@ -8,11 +8,15 @@ import { useRef, useEffect, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import {MTLLoader, OBJLoader, Water} from 'three-stdlib';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-  import { Raycaster } from 'three';
+import { Raycaster } from 'three';
+import { memo } from 'react';
+import { useAppDispatch, useAppSelector } from "@/app/hooks.ts";
+import { decrement, increment } from "@/features/counter/counterSlice.ts";
 
-const UnderwaterWorld = (props) => {
+const UnderwaterWorld = memo((props) => {
   const colors = [0x064e40, 0x0dad8d, 0x8dd8cc, 0x30bfbf, 0x0c98ba, 0x1164b4];
-  const increment = props.increment;
+  const dispatch = useAppDispatch();
+  const incrementPlastic = () => dispatch(increment());
   const fishModels = [
     {name:"./goldfish.glb",scale:[0.5,0.5,0.5]},
     {name:"./koi.glb",scale: [0.1,0.1,0.1]},
@@ -33,7 +37,7 @@ const UnderwaterWorld = (props) => {
       <RoamingFish />
       <Ocean color={colors[Math.floor(Math.random() * colors.length)]} />
       <InfiniteFish fishModels={fishModels} />
-      <BottleController increment={increment} />
+      <BottleController increment={incrementPlastic} />
       <Plants scale={50} number={200}/>
       <Soil />
       <Bubbles /> {/* Add bubbles to the scene */}
@@ -44,7 +48,7 @@ const UnderwaterWorld = (props) => {
       <Effects />  
     </Canvas>
   );
-};
+});
 
 function Ocean({ color }) {
   const waterRef = useRef();
@@ -92,7 +96,6 @@ function RoamingFish({modelFiles}) {
   const fishRef = useRef();
   const { camera } = useThree();  // Get the camera from the scene
   const [targetPosition, setTargetPosition] = useState(new THREE.Vector3());
-  console.log(modelFiles);
   const randomModel = modelFiles[Math.floor(Math.random() * modelFiles.length)];
 
   // Load the GLTF model
