@@ -1,9 +1,11 @@
 import { MoneyIcon } from "../icons/money";
+import { useAppSelector } from "@/app/hooks";
+import { RootState } from "@/app/store";
 
-interface MoneyCounterProps {
-  count: number;
-}
-export function MoneyCounter({ count }: MoneyCounterProps) {
+
+export function MoneyCounter() {
+  const count = useAppSelector((state: RootState) => state.counter.value);
+
   return (
     <div className="flex flex-row gap-2 items-center">
       <MoneyIcon color="white" size={25} />

@@ -5,7 +5,16 @@ import { Gauge } from "@/components/ui/gauge";
 import { ToxicityIcon } from "@/components/icons/toxicity";
 import { OceanHeightIcon } from "@/components/icons/ocean_height";
 import { MoneyCounter } from "@/components/ui/money_counter";
+import { useMemo, useState } from "react";
+
 export function Game() {
+
+  const [plastic, setPlastic] = useState(0);
+
+  useMemo(function incrementPlastic() {
+    setPlastic(plastic + 1);
+  }, [setPlastic]);
+
   return (
     <div className="h-screen">
       <div className="z-10 bg-transparent absolute right-5 top-5">
@@ -36,9 +45,9 @@ export function Game() {
       </div>
 
       <div className="z-10 bg-transparent absolute left-5 bottom-5 flex flex-col gap-2">
-        <MoneyCounter count={0} />
+        <MoneyCounter />
       </div>
-      <UnderwaterWorld />
+      <UnderwaterWorld/>
     </div>
   );
 }
