@@ -12,7 +12,7 @@ import {Vector3} from "three";
 const UnderwaterWorld = () => {
   const colors = [0x064e40, 0x0dad8d, 0x8dd8cc, 0x30bfbf, 0x0c98ba, 0x1164b4];
   return (
-    <Canvas dpr={[1,2]} camera={{ position: new Vector3(-2, 20, 4), fov: 25 }}>
+    <Canvas dpr={[1,2]} camera={{ position: new Vector3(-2, -20, 4), fov: 25 }}>
       <ambientLight intensity={1} />
       <directionalLight position={[10, 10, 0]} intensity={5} />
         <directionalLight position={[-10, 10, 5]} intensity={5} />
