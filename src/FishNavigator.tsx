@@ -70,7 +70,7 @@ function FishNavigator(props) {
     const currentPosition = ref.current.position
     const direction = new THREE.Vector3().subVectors(targetPosition, currentPosition)
     const distance = direction.length()
-    const moveDistance = Math.min(distance, delta * 1) // Adjust speed
+    const moveDistance = Math.min(distance, delta * 10) // Adjust speed
   
     if (distance > 0.1) {
       if (!isMoving) {
