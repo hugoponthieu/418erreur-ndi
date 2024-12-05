@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { decrement, increment } from "@/features/counter/counterSlice.ts";
 import { useAppDispatch, useAppSelector } from "@/app/hooks.ts";
 import { RootState } from "@/app/store.ts";
+import { ShopTable } from "./components/ui/shop";
 
 interface ShopItem {
   id: number;
@@ -124,6 +125,16 @@ export function Counter() {
       </div>
 
       <div style={{ flex: 1, borderLeft: "1px solid black", padding: "20px" }}>
+        <ShopTable
+          title="Magasin"
+          items={shopItems.map((item) => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            currentAmount: count,
+            effect: item.effect,
+          }))}
+        />
         <h2>Magasin</h2>
         {shopItems.map((item) => (
           <div key={item.id} style={{ marginBottom: "10px" }}>
