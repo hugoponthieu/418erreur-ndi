@@ -11,7 +11,7 @@ import {MTLLoader, OBJLoader, Water} from 'three-stdlib';
 const UnderwaterWorld = () => {
   const colors = [0x064e40, 0x0dad8d, 0x8dd8cc, 0x30bfbf, 0x0c98ba, 0x1164b4];
   return (
-    <Canvas dpr={[1,2]} camera={{ position: new THREE.Vector3(0, 100, 0), fov: 25 }}>
+    <Canvas dpr={[1,2]} camera={{ position: new THREE.Vector3(0, 10, 50), fov: 25 }}>
       <ambientLight intensity={1} />
       <directionalLight position={[10, 10, 0]} intensity={5} />
         <directionalLight position={[-10, 10, 5]} intensity={5} />
@@ -152,7 +152,7 @@ function Soil() {
   });
 
   return (
-      <mesh position={[0, -50, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <mesh position={[0, -20, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[500, 500]} />
         <meshStandardMaterial
             map={texture} // Base texture
@@ -295,7 +295,7 @@ function Plants({scale, number}) {
   // Generate random positions for the plants
   const plantPositions = Array.from({ length: number }, () => [
     Math.random() * 1000 - 500,
-    -50,
+    -20,
     Math.random() * 1000 - 500,
   ]);
 
