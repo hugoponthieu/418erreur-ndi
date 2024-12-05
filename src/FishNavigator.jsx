@@ -22,7 +22,7 @@ function FishNavigator(props) {
       const raycaster = new THREE.Raycaster()
       raycaster.setFromCamera(mouse, camera)
 
-      const plane = new THREE.Plane(new THREE.Vector3(0, 0, 20), 0) // y = 0 plane
+      const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0) // y = 0 plane
       const intersectPoint = new THREE.Vector3()
       raycaster.ray.intersectPlane(plane, intersectPoint)
 
