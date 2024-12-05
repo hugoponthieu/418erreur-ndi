@@ -7,7 +7,7 @@ import {
 import React from "react";
 
 interface GaugeProps {
-  color: "green" | "blue" | "red";
+  color: "green" | "blue" | "pink";
   percentage: number;
   label: string;
 }
@@ -17,11 +17,21 @@ export function Gauge({ color, percentage, label }: GaugeProps) {
   const nbBars = Math.floor(percentage / 10);
   const bars: React.ReactNode[] = [];
   for (let i = 0; i < nbBars; i++) {
-    bars.push(<div className={`h-4 flex-1 bg-${color}-600`}></div>);
+    switch (color) {
+      case "green":
+        bars.push(<div className={`h-4 flex-1 bg-green`}></div>);
+        break;
+      case "blue":
+        bars.push(<div className={`h-4 flex-1 bg-blue`}></div>);
+        break;
+      default:
+        bars.push(<div className={`h-4 flex-1 bg-pink`}></div>);
+        break;
+    }
   }
 
   for (let k = 0; k < 10 - nbBars; k++) {
-    bars.push(<div className="h-3 flex-1 bg-transparent"></div>);
+    bars.push(<div className="h-4 flex-1 bg-transparent"></div>);
   }
   return (
     <TooltipProvider>

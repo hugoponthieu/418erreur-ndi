@@ -34,18 +34,9 @@ export default {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
-        green: {
-          DEFAULT: "hsl(var(--green))",
-          foreground: "hsl(var(--green))",
-        },
-        rblue: {
-          DEFAULT: "hsl(var(--blue))",
-          foreground: "hsl(var(--blue))",
-        },
-        rpink: {
-          DEFAULT: "hsl(var(--pink))",
-          foreground: "hsl(var(--pink))",
-        },
+        green: "#00FF4D",
+        blue: "#92DCE5",
+        pink: "#FF66D8",
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",

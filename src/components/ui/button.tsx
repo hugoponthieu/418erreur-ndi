@@ -1,8 +1,16 @@
 import * as React from "react";
+import confetti from "canvas-confetti";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./tooltip";
+import { Shapes } from "lucide-react";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
@@ -55,22 +63,59 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = "Button";
 
-const RetroButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, size, asChild = false, ...props }, ref) => {
+interface RetroButtonProps extends ButtonProps {
+  legend: string;
+  particle?: string;
+}
+
+const RetroButton = React.forwardRef<HTMLButtonElement, RetroButtonProps>(
+  ({ className, size, particle, legend, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
+    const handleButtonClick = (e: React.MouseEvent) => {
+      if (particle) {
+        const plus_one = confetti.shapeFromText({
+          text: particle,
+          scalar: 100,
+        });
+        confetti({
+          particleCount: 3,
+          startVelocity: 10,
+          spread: 100,
+          scalar: 2,
+          shapes: [plus_one],
+          origin: {
+            x: e.clientX / window.innerWidth,
+            y: e.clientY / window.innerHeight,
+          },
+        });
+      }
+    };
     return (
-      <div className="relative flex w-fit group">
-        <Comp
-          className={cn(
-            buttonVariants({ variant: "retro", size, className }),
-            "bg-white",
-          )}
-          ref={ref}
-          {...props}
-        />
-        <div className="pixel-border shadow-pixel-1"></div>
-        <div className="pixel-border shadow-pixel-2 group-hover:hidden"></div>
-      </div>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger>
+            <div className="relative flex w-fit group h-fit">
+              <Comp
+                className={cn(
+                  buttonVariants({ variant: "retro", size, className }),
+                  "bg-white z-10",
+                )}
+                ref={ref}
+                {...props}
+                onClick={(e) => {
+                  handleButtonClick(e);
+                  props.onClick?.(e);
+                }}
+              />
+              <div className="pixel-border shadow-pixel-1"></div>
+              <div className="pixel-border shadow-pixel-2 group-hover:hidden"></div>
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p className="font-pressstart text-xs">{legend}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     );
   },
 );
