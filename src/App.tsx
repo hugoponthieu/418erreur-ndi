@@ -7,7 +7,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog-no-closed";
 import { Button } from "@/components/ui/button";
-import "./App.css";
 
 function App() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
