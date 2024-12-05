@@ -118,7 +118,7 @@ export function Counter() {
             </div>
           ))}
         </div>
-      </div>
+        
       <UnderwaterWorld />
     </div>
   );
