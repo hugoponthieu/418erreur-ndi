@@ -13,7 +13,7 @@ export default {
         pressstart: ['"Press Start 2P"', "cursive"],
       },
       backgroundImage: {
-        deepwater: "url(./src/assets/background.png)",
+        deepwater: "url(./background.png)",
       },
       colors: {
         background: "hsl(var(--background))",
