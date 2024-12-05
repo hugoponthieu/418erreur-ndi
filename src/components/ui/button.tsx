@@ -10,7 +10,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./tooltip";
-import { Shapes } from "lucide-react";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
@@ -81,10 +80,8 @@ const RetroButton = React.forwardRef<HTMLButtonElement, RetroButtonProps>(
           particleCount: 3,
           startVelocity: 10,
           spread: 100,
-          flat: true,
           scalar: 2,
           disableForReducedMotion: true,
-          useWorker: true,
           shapes: [plus_one],
           origin: {
             x: e.clientX / window.innerWidth,
