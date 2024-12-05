@@ -17,7 +17,7 @@ function Counter() {
       
 
       // Augmente la probabilité toutes les 20 secondes
-      if (time % 20 === 0 && time > 0) {
+      if (time % 20 === 0 && time > 0 && spawnProbability > 500) {
         setSpawnProbability(prev => prev / 2);
       }
     }, Math.random() * spawnProbability);

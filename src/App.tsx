@@ -34,7 +34,7 @@ function App() {
           </div>
         </div>
         <div className="flex flex-col gap-8 justify-center items-center">
-          <Button variant={'homepage'} size={'homepage'} disabled={!isChecked} className="w-fit relative bg-blue-400 rounded-lg border-none p-0 cursor-pointer outline-offset-4 active:outline-none">
+          <Button variant={'default'} size={'homepage'} disabled={!isChecked} className="w-fit relative bg-blue-400 rounded-lg border-none p-0 cursor-pointer outline-offset-4 active:outline-none">
             <span className="block px-10 py-6 rounded-lg text-2xl md:text-4xl text-white bg-blue-500 translate-y-[-6px] active:translate-y-[-2px]">PLAY</span>
           </Button>
           <div className="flex items-center space-x-2 gap-4">
