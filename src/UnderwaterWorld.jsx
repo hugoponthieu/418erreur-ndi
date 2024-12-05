@@ -7,12 +7,11 @@ import * as THREE from 'three';
 import { useRef, useEffect, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import {MTLLoader, OBJLoader, Water} from 'three-stdlib';
-import {Vector3} from "three";
 
 const UnderwaterWorld = () => {
   const colors = [0x064e40, 0x0dad8d, 0x8dd8cc, 0x30bfbf, 0x0c98ba, 0x1164b4];
   return (
-    <Canvas dpr={[1,2]} camera={{ position: new Vector3(-2, -20, 4), fov: 25 }}>
+    <Canvas dpr={[1,2]} camera={{ position: new THREE.Vector3(0, 100, 0), fov: 25 }}>
       <ambientLight intensity={1} />
       <directionalLight position={[10, 10, 0]} intensity={5} />
         <directionalLight position={[-10, 10, 5]} intensity={5} />
@@ -27,7 +26,7 @@ const UnderwaterWorld = () => {
       <Soil />
       <Bubbles /> {/* Add bubbles to the scene */}
       <Suspense fallback={null}>
-        <FishNavigator scale={30} position={[0, -20, 0]}/>
+        <FishNavigator scale={30} position={[0, 10, 0]}/>
         {/*<UnderwaterFloor position={[0,-3,-2]}/> /!* Add the UnderwaterFloor component *!/*/}
       </Suspense>
       <Effects />  
@@ -172,7 +171,7 @@ function Soil() {
 function CameraController() {
   const { camera, gl } = useThree();
   const [mouseDown, setMouseDown] = useState(false);
-  const [previousMousePosition, setPreviousMousePosition] = useState({ x: 0, y: 0 });
+  const [previousMousePosition, setPreviousMousePosition] = useState({ x: 0, y: -20 });
   const keysPressed = useRef({
     ArrowUp: false,
     ArrowDown: false,

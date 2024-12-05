@@ -8,7 +8,7 @@ function FishNavigator(props) {
   const ref = useRef()
   const { scene, animations } = useGLTF('/fish.glb')
   const { actions } = useAnimations(animations, ref)
-  const [targetPosition, setTargetPosition] = React.useState(new THREE.Vector3(0, -40,0))
+  const [targetPosition, setTargetPosition] = React.useState(new THREE.Vector3())
   const [isMoving, setIsMoving] = React.useState(false)
 
   const { camera, gl } = useThree()
@@ -23,7 +23,7 @@ function FishNavigator(props) {
       const raycaster = new THREE.Raycaster()
       raycaster.setFromCamera(mouse, camera)
 
-      const plane = new THREE.Plane(new THREE.Vector3(0, -40, 0), 0) // y = 0 plane
+      const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0) // y = 0 plane
       const intersectPoint = new THREE.Vector3(0,-40,0)
       raycaster.ray.intersectPlane(plane, intersectPoint)
 
@@ -69,7 +69,7 @@ function FishNavigator(props) {
     if (!ref.current) return
   
     const currentPosition = ref.current.position
-    const direction = new THREE.Vector3().subVectors(new Vector3(targetPosition.x * 2, -40, targetPosition.z * 2), new Vector3(currentPosition.x * 2, -40, currentPosition.z*2))
+    const direction = new THREE.Vector3().subVectors(targetPosition, currentPosition)
     const distance = direction.length()
     const moveDistance = Math.min(distance, delta * 10) // Adjust speed
   
