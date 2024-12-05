@@ -19,13 +19,13 @@ export function Gauge({ color, percentage, label }: GaugeProps) {
   for (let i = 0; i < nbBars; i++) {
     switch (color) {
       case "green":
-        bars.push(<div key={`filled-${i}`} className={`h-4 flex-1 bg-green`}></div>);
+        bars.push(<div key={`filled-${i}`} className={`h-4 flex-1 bg-green-600`}></div>);
         break;
       case "blue":
-        bars.push(<div key={`filled-${i}`} className={`h-4 flex-1 bg-blue`}></div>);
+        bars.push(<div key={`filled-${i}`} className={`h-4 flex-1 bg-blue-600`}></div>);
         break;
       default:
-        bars.push(<div key={`filled-${i}`} className={`h-4 flex-1 bg-pink`}></div>);
+        bars.push(<div key={`filled-${i}`} className={`h-4 flex-1 bg-pink-600`}></div>);
         break;
     }
   }
