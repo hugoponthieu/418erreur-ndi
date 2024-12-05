@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import "@testing-library/jest-dom";
 
 describe("Dialog Component", () => {
   it("renders correctly when open", () => {

@@ -1,6 +1,5 @@
 import { render } from "@testing-library/react";
 import { Gauge } from "@/components/ui/gauge";
-import "@testing-library/jest-dom";
 
 describe("Gauge Component", () => {
   it("renders the correct number of bars based on percentage", () => {
