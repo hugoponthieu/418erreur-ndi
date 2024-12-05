@@ -17,11 +17,16 @@ export function Components() {
       <OceanHeightIcon color="#000" size={48} />
       <div className="flex flex-row gap-3 items-center">
         <TemperatureIcon color="#000" size={30} />
-        <Gauge color="green" label="blueyeah" percentage={20} />
+        <Gauge color="green" label="blueyeah" percentage={30} />
       </div>
       <ShopTable
         title="test"
         items={[
+          {
+            name: "test",
+            currentAmount: 34,
+            price: 321,
+          },
           {
             name: "test",
             currentAmount: 34,
