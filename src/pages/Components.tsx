@@ -3,13 +3,14 @@ import { TemperatureIcon } from "@/components/icons/temperature";
 import { ToxicityIcon } from "@/components/icons/toxicity";
 import { RetroButton } from "@/components/ui/button";
 import { Gauge } from "@/components/ui/gauge";
+import { ShopTable } from "@/components/ui/shop";
 import { useState } from "react";
 
 export function Components() {
   const [count, setCount] = useState(0);
   return (
     <div>
-      <RetroButton onClick={() => setCount(count + 1)}>
+      <RetroButton legend="button" onClick={() => setCount(count + 1)}>
         count is {count}
       </RetroButton>
       <ToxicityIcon color="#000" size={48} />
@@ -18,6 +19,16 @@ export function Components() {
         <TemperatureIcon color="#000" size={30} />
         <Gauge color="green" label="blueyeah" percentage={20} />
       </div>
+      <ShopTable
+        title="test"
+        items={[
+          {
+            name: "test",
+            currentAmount: 34,
+            price: 321,
+          },
+        ]}
+      />
     </div>
   );
 }
