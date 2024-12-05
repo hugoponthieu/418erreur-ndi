@@ -1,11 +1,11 @@
 export default {
 	preset: 'ts-jest',
-	testEnvironment: 'jsdom', // Pour tester le DOM dans un environnement navigateur simulé
+	testEnvironment: 'jsdom',
 	moduleNameMapper: {
-		'^@/(.*)$': '<rootDir>/src/$1', // Alias pour correspondre à votre configuration Vite
+		'^@/(.*)$': '<rootDir>/src/$1',
 	},
 	transform: {
-		'^.+\\.(ts|tsx)$': 'ts-jest', // Transformation TypeScript
+		'^.+\\.(ts|tsx)$': 'ts-jest',
 	},
 	testPathIgnorePatterns: ['/node_modules/', '/dist/'],
 };
