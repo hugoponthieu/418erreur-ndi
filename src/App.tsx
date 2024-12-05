@@ -8,10 +8,6 @@ import {
 } from "@/components/ui/dialog-no-closed";
 import { Button } from "@/components/ui/button";
 import "./App.css";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import { RetroButton } from "./components/ui/button";
-import { Gauge } from "./components/ui/gauge";
 
 function App() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
