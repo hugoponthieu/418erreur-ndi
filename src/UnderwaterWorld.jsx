@@ -11,7 +11,7 @@ import {MTLLoader, OBJLoader, Water} from 'three-stdlib';
 const UnderwaterWorld = () => {
   const colors = [0x064e40, 0x0dad8d, 0x8dd8cc, 0x30bfbf, 0x0c98ba, 0x1164b4];
   return (
-    <Canvas dpr={[1,2]} camera={{ position: new THREE.Vector3(0, 10, 50), fov: 25 }}>
+    <Canvas dpr={[1,2]} camera={{ position: new THREE.Vector3(0, 20, 50), fov: 25 }}>
       <ambientLight intensity={1} />
       <directionalLight position={[10, 10, 0]} intensity={5} />
         <directionalLight position={[-10, 10, 5]} intensity={5} />
@@ -33,12 +33,6 @@ const UnderwaterWorld = () => {
     </Canvas>
   );
 };
-
-function UnderwaterFloor({ position }) {
-  const { scene } = useGLTF('underwater.glb');
-  scene.position.set(position[0], position[1], position[2]);
-  return <primitive object={scene} scale={0.5} rotation={[-0.3,0,0]}/>;
-}
 
 function Ocean({ color }) {
   const waterRef = useRef();
@@ -172,28 +166,7 @@ function CameraController() {
   const { camera, gl } = useThree();
   const [mouseDown, setMouseDown] = useState(false);
   const [previousMousePosition, setPreviousMousePosition] = useState({ x: 0, y: -20 });
-  const keysPressed = useRef({
-    ArrowUp: false,
-    ArrowDown: false,
-    ArrowLeft: false,
-    ArrowRight: false,
-    w: false,
-    s: false,
-  });
-
   useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key in keysPressed.current) {
-        keysPressed.current[event.key] = true;
-      }
-    };
-
-    const handleKeyUp = (event) => {
-      if (event.key in keysPressed.current) {
-        keysPressed.current[event.key] = false;
-      }
-    };
-
     const handleMouseDown = (event) => {
       setMouseDown(true);
       setPreviousMousePosition({ x: event.clientX, y: event.clientY });
@@ -203,9 +176,9 @@ function CameraController() {
       if (!mouseDown) return;
 
       const deltaMove = { x: event.clientX - previousMousePosition.x, y: event.clientY - previousMousePosition.y };
+      camera.rotation.order = "YXZ";
       camera.rotation.y -= deltaMove.x * 0.01;
-      camera.rotation.x -= deltaMove.y * 0.01;
-      camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x));
+      camera.rotation.x = -0.4;
       setPreviousMousePosition({ x: event.clientX, y: event.clientY });
     };
 
@@ -213,49 +186,20 @@ function CameraController() {
       setMouseDown(false);
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
+
     gl.domElement.addEventListener("mousedown", handleMouseDown);
     gl.domElement.addEventListener("mousemove", handleMouseMove);
     gl.domElement.addEventListener("mouseup", handleMouseUp);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
+
       gl.domElement.removeEventListener("mousedown", handleMouseDown);
       gl.domElement.removeEventListener("mousemove", handleMouseMove);
       gl.domElement.removeEventListener("mouseup", handleMouseUp);
     };
   }, [camera, gl, mouseDown, previousMousePosition]);
 
-  useFrame(() => {
-    const moveSpeed = 0.2;
-
-    const moveDirection = new THREE.Vector3();
-    camera.getWorldDirection(moveDirection);
-    const rightVector = new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), moveDirection).normalize();
-    moveDirection.y = 0;
-    moveDirection.normalize();
-
-    if (keysPressed.current.ArrowUp) {
-      camera.position.add(moveDirection.clone().multiplyScalar(moveSpeed));
-    }
-    if (keysPressed.current.ArrowDown) {
-      camera.position.add(moveDirection.clone().multiplyScalar(-moveSpeed));
-    }
-    if (keysPressed.current.ArrowLeft) {
-      camera.position.add(rightVector.clone().multiplyScalar(-moveSpeed));
-    }
-    if (keysPressed.current.ArrowRight) {
-      camera.position.add(rightVector.clone().multiplyScalar(moveSpeed));
-    }
-    if (keysPressed.current.w) {
-      camera.position.y += moveSpeed;
-    }
-    if (keysPressed.current.s) {
-      camera.position.y -= moveSpeed;
-    }
-  });
+  console.log(camera.rotation);
 
   return null;
 }
