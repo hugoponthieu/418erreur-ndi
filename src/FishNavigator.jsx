@@ -13,7 +13,7 @@ function FishNavigator(props) {
   const { camera, gl } = useThree()
 
   React.useEffect(() => {
-    const handleClick = (event) => {
+    const handleMouseMove = (event) => {
       const mouse = new THREE.Vector2(
         (event.clientX / window.innerWidth) * 2 - 1,
         -(event.clientY / window.innerHeight) * 2 + 1
@@ -30,10 +30,10 @@ function FishNavigator(props) {
       ref.current.lookAt(intersectPoint.x, intersectPoint.y, intersectPoint.z)
     }
 
-    gl.domElement.addEventListener('click', handleClick)
+    gl.domElement.addEventListener('mousemove', handleMouseMove)
 
     return () => {
-      gl.domElement.removeEventListener('click', handleClick)
+      gl.domElement.removeEventListener('mousemove', handleMouseMove)
     }
   }, [camera, gl])
 
