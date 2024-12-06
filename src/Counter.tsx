@@ -73,7 +73,7 @@ export function Counter() {
 
   return (
     <div className="h-screen relative flex">
-      <div className="z-10 h-full bg-transparent absolute">
+      <div className="z-10 bg-transparent absolute">
         <h1>Compteur: {count}</h1>
         <p>Temps de jeu: {gameTime} secondes</p>
         {buttons.map(button => (
