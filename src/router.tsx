@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router";
 import App from "./App";
 import { Components } from "./pages/Components";
-import Counter from "./Counter";
 import { Game } from "./pages/Game";
 
 export const router = createBrowserRouter([

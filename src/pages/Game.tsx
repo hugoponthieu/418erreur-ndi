@@ -1,4 +1,5 @@
 import { ShopTable } from "@/components/ui/shop";
+// @ts-ignore
 import UnderwaterWorld from "../UnderwaterWorld";
 import { TemperatureIcon } from "@/components/icons/temperature";
 import { Gauge } from "@/components/ui/gauge";
