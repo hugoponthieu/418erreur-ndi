@@ -5,8 +5,10 @@ import "./App.css";
 import { OldDialog } from "./components/ui/old-dialog";
 import { OldProgress } from "./components/ui/old-progress";
 import { Game } from "./game-tcha/game";
+import { useNavigate } from "react-router";
 
 function App() {
+  const navigate = useNavigate();
   const maxScore = 3;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogWinOpen, setIsDialogWinOpen] = useState(false);
@@ -94,6 +96,7 @@ function App() {
             size={"homepage"}
             disabled={!won}
             className="w-fit relative bg-blue-400 rounded-lg border-none p-0 cursor-pointer outline-offset-4 active:outline-none"
+            onClick={() => navigate("/game")}
           >
             <span className="block px-10 py-6 rounded-lg text-2xl md:text-4xl text-white bg-blue-500 translate-y-[-6px] active:translate-y-[-2px]">
               PLAY
