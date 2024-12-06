@@ -2,6 +2,12 @@ import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import "./App.css";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog-no-closed";
 import { useNavigate } from "react-router";
 
 function App() {
@@ -67,7 +73,7 @@ function App() {
       </div>
 
       {/* Dialog */}
-      {/* <Dialog open={isDialogOpen} onOpenChange={() => {}}>
+      <Dialog open={isDialogOpen} onOpenChange={() => {}}>
         <DialogContent
           className="md:max-w-[425px]"
           onEscapeKeyDown={(e) => e.preventDefault()} // Bloque la fermeture avec Escape
@@ -78,7 +84,7 @@ function App() {
           </DialogHeader>
           <div>You must add the captcha content here.</div>
         </DialogContent>
-      </Dialog> */}
+      </Dialog>
     </div>
   );
 }
