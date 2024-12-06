@@ -26,13 +26,14 @@ interface ShopTableProps {
 }
 
 function ShopItem({ currentAmount, name, price, informations }: KeyProps) {
-  // const sellPrice = price * 0.7;
+  const sellPrice = price * 0.7;
+  const count = useAppSelector((state: RootState) => state.counter.value);
+  const autoClickers = useAppSelector((state: RootState) => state.counter.autoClickers);
+  const incrementAutoClicker = () => dispatch(addAutoClicker());
 
   const buyItem = () => {
-    if (currentAmount > price) {
-      currentAmount -= price;
-      addAutoClicker();
-      startAutoClickers();
+    if (currentAmount >= price) {
+      autoClickers
     }
   };
 

@@ -22,7 +22,7 @@ interface Button {
 }
 
 const initialState: CounterState = {
-  value: 10,
+  value: 0,
   toxicity: 1,
   overfishing: 0,
   temperature: 0,
