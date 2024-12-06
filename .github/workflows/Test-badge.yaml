@@ -1,0 +1,32 @@
+name: ⚡ My ci things
+
+on:
+  push:
+    branches:
+      - "*"
+
+jobs:
+  my-workflow:
+    name: 📣 Generate cool badges
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: ⬇️ Checkout repo
+      uses: actions/checkout@v4
+
+    - name: 📦 Setup pnpm
+      uses: pnpm/action-setup@v4
+      with: 
+        version: latest
+
+    - name: 📥 Install dependencies
+      run: pnpm install
+
+    - name: 🔍 Tests
+      run: pnpm test:ci
+
+    - name: ⚙️ Generating coverage badges
+      uses: jpb06/coverage-badges-action@latest
+      with:
+        branches: main,test-badge
+        badges-icon: jest
