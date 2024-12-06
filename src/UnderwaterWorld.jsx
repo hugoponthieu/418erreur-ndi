@@ -1,9 +1,8 @@
-import React, { Suspense } from "react";
+import React, {Suspense} from "react";
 import { Canvas } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import FishNavigator from "./FishNavigator";
 import { Effects } from "./Effect";
-import * as THREE from "three";
 import { useRef, useEffect, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { MTLLoader, OBJLoader, Water } from "three-stdlib";
@@ -12,6 +11,7 @@ import { Raycaster } from "three";
 import { memo } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks.ts";
 import { decrement, increment } from "@/features/counter/counterSlice.ts";
+import * as THREE from "three";
 
 const UnderwaterWorld = memo((props) => {
   const dispatch = useAppDispatch();
@@ -21,7 +21,7 @@ const UnderwaterWorld = memo((props) => {
     { name: "./koi.glb", scale: [0.1, 0.1, 0.1] },
     { name: "./bigGrey.glb", scale: [1, 1, 1] },
     { name: "./sharky.glb", scale: [3, 3, 3] },
-    { name: "./littlePink.glb", scale: [0.01, 0.01, 0.01] },
+    // { name: "./littlePink.glb", scale: [0.01, 0.01, 0.01] },
   ]; // Add your GLB files here
   return (
     <Canvas
@@ -36,7 +36,6 @@ const UnderwaterWorld = memo((props) => {
       <directionalLight position={[0, 3, 0]} intensity={5} />
       <spotLight position={[10, 6, 10]} angle={0.15} intensity={10} />
       <CameraController />
-      <RoamingFish />
       <Ocean />
       <InfiniteFish fishModels={fishModels} />
       <BottleController increment={incrementPlastic} />
@@ -98,13 +97,13 @@ function Ocean() {
   return <group ref={waterRef} />;
 }
 
-function RoamingFish({ modelFiles }) {
+function RoamingFish({ modelFiles, position }) {
   if (!modelFiles) {
     return;
   }
   const fishRef = useRef();
   const { camera } = useThree(); // Get the camera from the scene
-  const [targetPosition, setTargetPosition] = useState(new THREE.Vector3());
+  const [targetPosition, setTargetPosition] = useState(new THREE.Vector3(position[0], position[1], position[2]));
   const randomModel = modelFiles[Math.floor(Math.random() * modelFiles.length)];
 
   // Load the GLTF model
@@ -163,7 +162,54 @@ function RoamingFish({ modelFiles }) {
   });
 
   return (
-    <primitive ref={fishRef} object={scene.clone()} scale={randomModel.scale} />
+    <primitive ref={fishRef} object={scene.clone()} position={new THREE.Vector3(position[0],position[1],position[2])} scale={new THREE.Vector3(randomModel.scale[0], randomModel.scale[1], randomModel.scale[2])} />
+  );
+}
+
+function InfiniteFish({ fishModels }) {
+  const overfishing = useAppSelector((state) => state.counter.overfishing);
+  const MAX_FISH = 10;
+  const fishPositions = useState(Array.from(
+          { length: MAX_FISH },
+          () => [
+            Math.random() * 1200 - 600, // Random X position within range
+            Math.random() * 5 - 5, // Random Y position within range
+            Math.random() * 100 - 50, // Random Z position within range
+          ],
+      ))[0];
+
+
+  console.log(fishPositions);
+  return (
+      <>
+        {fishPositions.filter((_, index) => index < MAX_FISH - Math.floor((overfishing / 100) * MAX_FISH)).map((position, index) => (
+            <RoamingFish modelFiles={fishModels} position={position}  key={index} />
+        ))}
+      </>
+  );
+}
+
+// Bubbles component to simulate bubbles rising underwater
+function Bubbles() {
+  const bubblePositions = Array.from({ length: 50 }, () => [
+    Math.random() * 100 - 50,
+    Math.random() * 10 - 5,
+    Math.random() * 100 - 50,
+  ]);
+
+  return (
+      <>
+        {bubblePositions.map((pos, index) => (
+            <mesh key={index} position={pos}>
+              <sphereGeometry args={[0.2, 8, 8]} />
+              <meshStandardMaterial
+                  color="white"
+                  opacity={0.6}
+                  transparent={true}
+              />
+            </mesh>
+        ))}
+      </>
   );
 }
 
@@ -275,52 +321,6 @@ function Bottle({ position, onRemove }) {
   }, [bottleModel, camera, onRemove]);
 
   return <group ref={bottleRef} scale={1} />;
-}
-
-function InfiniteFish({ fishModels }) {
-  const overfishing = useAppSelector((state) => state.counter.overfishing);
-  const MAX_FISH = 10;
-  const fishPositions = Array.from(
-    { length: MAX_FISH - Math.floor((overfishing / 100) * MAX_FISH) },
-    () => [
-      Math.random() * 1200 - 600, // Random X position within range
-      Math.random() * 5 - 5, // Random Y position within range
-      Math.random() * 100 - 50, // Random Z position within range
-    ],
-  );
-
-  console.log(fishPositions);
-  return (
-    <>
-      {fishPositions.map((index) => (
-        <RoamingFish modelFiles={fishModels} key={index} />
-      ))}
-    </>
-  );
-}
-
-// Bubbles component to simulate bubbles rising underwater
-function Bubbles() {
-  const bubblePositions = Array.from({ length: 50 }, () => [
-    Math.random() * 100 - 50,
-    Math.random() * 10 - 5,
-    Math.random() * 100 - 50,
-  ]);
-
-  return (
-    <>
-      {bubblePositions.map((pos, index) => (
-        <mesh key={index} position={pos}>
-          <sphereGeometry args={[0.2, 8, 8]} />
-          <meshStandardMaterial
-            color="white"
-            opacity={0.6}
-            transparent={true}
-          />
-        </mesh>
-      ))}
-    </>
-  );
 }
 
 function Soil() {
