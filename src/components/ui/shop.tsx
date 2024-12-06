@@ -1,7 +1,6 @@
 import {
   addAutoClicker,
   decrement,
-  increment,
   resetOverfishing,
   resetTemperature,
   startAutoClickers,

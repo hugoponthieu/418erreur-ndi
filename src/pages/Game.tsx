@@ -11,7 +11,6 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import {
   incrementOverfishing,
   incrementTemperature,
-  incrementToxicity,
 } from "@/features/counter/counterSlice";
 import { RootState } from "@/app/store";
 import { OldDialog } from "@/components/ui/old-dialog";
