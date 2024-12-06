@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 418-ndi
+  name: ndi
   namespace: ndi
   labels:
-    app: 418-ndi
+    app: ndi
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: 418-ndi
+      app: ndi
   template:
     metadata:
       labels:
-        app: 418-ndi
+        app: ndi
     spec:
       containers:
-      - name: 418-ndi
-        image: 418-ndi:latest
+      - name: ndi
+        image: ghcr.io/hugoponthieu/418erreur-ndi:latest
         ports:
         - containerPort: 80
         imagePullPolicy: Always
