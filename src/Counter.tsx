@@ -1,5 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import { decrement, increment } from "@/features/counter/counterSlice.ts";
+import {
+  addAutoClicker,
+  decrement,
+  increment,
+  startAutoClickers,
+} from "@/features/counter/counterSlice.ts";
+import autoClicker from "@/features/counter/autoClicker";
 import { useAppDispatch, useAppSelector } from "@/app/hooks.ts";
 import { RootState } from "@/app/store.ts";
 
@@ -16,6 +22,9 @@ export function Counter() {
 
   const startTimeRef = useRef(Date.now());
   const [gameTime, setGameTime] = useState(0);
+  const autoClickers = useAppSelector(
+    (state: RootState) => state.counter.autoClickers
+  );
 
   const [buttons, setButtons] = useState<
     Array<{
@@ -37,7 +46,7 @@ export function Counter() {
   const [shopItems, setShopItems] = useState<ShopItem[]>([
     {
       id: 1,
-      name: "Bouton Speed Boost",
+      name: "Get AutoClicker",
       price: 10,
       effect: () => {
         // Réduire le temps d'apparition des boutons
@@ -57,12 +66,22 @@ export function Counter() {
   const incrementCounter = (buttonId: number) => {
     dispatch(increment());
 
+
     setButtons(prevButtons => 
       prevButtons.map(button => 
         button.id === buttonId 
           ? { ...button, show: false } 
           : button
       )
+
+    setButtons((prevButtons) =>
+      prevButtons.map((button) =>
+
+        button.id === buttonId ? { ...button, show: false } : button,
+      ),
+        button.id === buttonId ? { ...button, show: false } : button
+      )
+
     );
 
     // Temps aléatoire avant l'apparition du prochain bouton
@@ -77,6 +96,7 @@ export function Counter() {
           }
         };
 
+
         return prevButtons.map(button => 
           button.id === buttonId 
             ? { 
@@ -89,6 +109,21 @@ export function Counter() {
               }
             : button
         ).concat(newButton);
+
+        return prevButtons
+          .map((button) =>
+            button.id === buttonId
+              ? {
+                ...button,
+                show: true,
+                position: {
+                  top: Math.random() * (window.innerHeight - 50),
+                  left: Math.random() * (window.innerWidth - 100),
+                },
+              }
+              : button
+          )
+          .concat(newButton);
       });
     }, Math.random() * 5000); // Entre 0 et 5 secondes
   };
