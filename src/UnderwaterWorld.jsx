@@ -12,7 +12,7 @@ const UnderwaterWorld = () => {
   const colors = [0x064e40, 0x0dad8d, 0x8dd8cc, 0x30bfbf, 0x0c98ba, 0x1164b4];
   const fishModels = [
     {name:"./goldfish.glb",scale:[0.5,0.5,0.5]},
-    {name:"./koi.glb",scale: [0.2,0.2,0.2]},
+    {name:"./koi.glb",scale: [0.1,0.1,0.1]},
     {name:"./bigGrey.glb",scale:[1,1,1]},
     {name:"./sharky.glb",scale:[3,3,3]},
     {name:"./littlePink.glb",scale:[0.01,0.01,0.01]},
@@ -211,33 +211,6 @@ function CameraController() {
   camera.rotation.order = "YXZ";
   camera.rotation.y = 0;
   camera.rotation.x = -0.4;
-    const handleMouseMove = (event) => {
-      if (!mouseDown) return;
-
-      const deltaMove = { x: event.clientX - previousMousePosition.x, y: event.clientY - previousMousePosition.y };
-      camera.rotation.order = "YXZ";
-      camera.rotation.y -= deltaMove.x * 0.01;
-      camera.rotation.x = -0.4;
-      setPreviousMousePosition({ x: event.clientX, y: event.clientY });
-    };
-
-    const handleMouseUp = () => {
-      setMouseDown(false);
-    };
-
-
-    gl.domElement.addEventListener("mousedown", handleMouseDown);
-    gl.domElement.addEventListener("mousemove", handleMouseMove);
-    gl.domElement.addEventListener("mouseup", handleMouseUp);
-
-    return () => {
-
-      gl.domElement.removeEventListener("mousedown", handleMouseDown);
-      gl.domElement.removeEventListener("mousemove", handleMouseMove);
-      gl.domElement.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [camera, gl, mouseDown, previousMousePosition]);
-
 
   return null;
 }
