@@ -15,6 +15,7 @@ import {
 } from "@/features/counter/counterSlice";
 import { RootState } from "@/app/store";
 import { OldDialog } from "@/components/ui/old-dialog";
+import { HelpButton } from "@/components/ui/help";
 
 export function Game() {
   const [plastic, setPlastic] = useState(0);
@@ -23,7 +24,9 @@ export function Game() {
   const toxicity = useAppSelector((state) => state.counter.toxicity);
   const temperature = useAppSelector((state) => state.counter.temperature);
   const overfishing = useAppSelector((state) => state.counter.overfishing);
-  const autoClickers = useAppSelector((state: RootState) => state.counter.autoClickers);
+  const autoClickers = useAppSelector(
+    (state: RootState) => state.counter.autoClickers,
+  );
 
   const dispatch = useAppDispatch();
 
@@ -53,8 +56,8 @@ export function Game() {
       <div className="z-10 bg-transparent absolute right-5 top-5 flex flex-col gap-5">
         <OldDialog header="Game Over" isDialogOpen={gameOver}>
           <p className="font-pressstart">
-            You lost the game because the ocean is too toxic, too hot and there is too much
-            overfishing. You can try again by refreshing the page.
+            You lost the game because the ocean is too toxic, too hot and there
+            is too much overfishing. You can try again by refreshing the page.
           </p>
         </OldDialog>
         <ShopTable
@@ -63,7 +66,7 @@ export function Game() {
             {
               name: "AGC 3000",
               currentAmount: autoClickers,
-              price: 10*Math.pow(2, autoClickers),
+              price: 10 * Math.pow(2, autoClickers),
               informations: {
                 title: "The auto-garbage collector 3000",
                 description:
@@ -143,6 +146,10 @@ export function Game() {
             }}
           />
         </div>
+      </div>
+
+      <div className="z-10 bg-transparent absolute right-5 bottom-5 flex flex-col gap-2">
+        <HelpButton />
       </div>
 
       <div className="z-10 bg-transparent absolute left-5 bottom-5 flex flex-col gap-2">
