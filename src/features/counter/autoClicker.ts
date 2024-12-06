@@ -18,7 +18,10 @@ const autoClickerMiddleware: Middleware = (store) => {
           const { autoClickers, buttons } = state.counter;
 
           // Trouver un bouton visible
-          const visibleButton = buttons.find((button: { id: number; show: boolean }) => button.show);
+          const visibleButton = buttons.find(
+            (button: { id: number; show: boolean }) => button.show,
+          );
+          console.log(visibleButton);
 
           if (visibleButton) {
             // Simuler un clic : incrémenter et retirer le bouton

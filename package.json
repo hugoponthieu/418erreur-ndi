@@ -13,7 +13,7 @@
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"test:coverage": "jest --coverage",
-    "test:ci": "jest --ci --coverage"
+		"test:ci": "jest --ci --coverage"
 	},
 	"dependencies": {
 		"@radix-ui/react-checkbox": "^1.1.2",
@@ -36,7 +36,8 @@
 		"tailwind-merge": "^2.5.5",
 		"tailwindcss-animate": "^1.0.7",
 		"three": "^0.171.0",
-		"three-stdlib": "^2.34.0"
+		"three-stdlib": "^2.34.0",
+		"uuid": "^11.0.3"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.16.0",
