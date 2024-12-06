@@ -10,6 +10,13 @@ import {MTLLoader, OBJLoader, Water} from 'three-stdlib';
 
 const UnderwaterWorld = () => {
   const colors = [0x064e40, 0x0dad8d, 0x8dd8cc, 0x30bfbf, 0x0c98ba, 0x1164b4];
+  const fishModels = [
+    {name:"./goldfish.glb",scale:[0.5,0.5,0.5]},
+    {name:"./koi.glb",scale: [0.2,0.2,0.2]},
+    {name:"./bigGrey.glb",scale:[1,1,1]},
+    {name:"./sharky.glb",scale:[3,3,3]},
+    {name:"./littlePink.glb",scale:[0.01,0.01,0.01]},
+  ]; // Add your GLB files here
   return (
     <Canvas dpr={[1,2]} camera={{ position: new THREE.Vector3(0, 20, 50), fov: 30 }}>
       <ambientLight intensity={1} />
@@ -20,9 +27,10 @@ const UnderwaterWorld = () => {
         <directionalLight position={[0, 3, 0]} intensity={5} />
       <spotLight position={[10, 6, 10]} angle={0.15} intensity={10} />
       <CameraController />
+      <RoamingFish />
       <Ocean color={colors[Math.floor(Math.random() * colors.length)]} />
-      <InfiniteFish />
-      <Plants scale={50} number={2000}/>
+      <InfiniteFish fishModels={fishModels} />
+      <Plants scale={50} number={200}/>
       <Soil />
       <Bubbles /> {/* Add bubbles to the scene */}
       <Suspense fallback={null}>
@@ -73,42 +81,77 @@ function Ocean({ color }) {
   return <group ref={waterRef} />;
 }
 
-// Infinite Fish simulation
-function InfiniteFish() {
-  const fishPositions = Array.from({ length: 50 }, () => [
-    Math.random() * 100 - 50,
-    Math.random() * 100 - 50,
-    Math.random() * 100 - 50,
-  ]);
-
-  return (
-    <>
-      {fishPositions.map((pos, index) => (
-        <Fish key={index} position={pos} />
-      ))}
-    </>
-  );
-}
-
-// Fish component with basic movement
-function Fish({ position }) {
+function RoamingFish({modelFiles}) {
+  if (!modelFiles){
+    return
+  }
   const fishRef = useRef();
+  const { camera } = useThree();  // Get the camera from the scene
+  const [targetPosition, setTargetPosition] = useState(new THREE.Vector3());
+  console.log(modelFiles);
+  const randomModel = modelFiles[Math.floor(Math.random() * modelFiles.length)];
 
-  useFrame(() => {
+  // Load the GLTF model
+  const { scene } = useGLTF(randomModel.name);  // Replace with your GLB model
+
+  // Update fish's target position around the camera
+  useEffect(() => {
+    const updateTargetPosition = () => {
+      const offsetX = Math.random() * 300 - 150;
+      const offsetY = -25;
+      const offsetZ = Math.random() * 300 - 150;
+
+      // Set the new target position based on the camera's position
+      setTargetPosition(camera.position.clone().add(new THREE.Vector3(offsetX, offsetY, offsetZ)));
+    };
+
+    // Set the initial target position
+    updateTargetPosition();
+
+    // Update the target position every 2-3 seconds
+    const interval = setInterval(updateTargetPosition, Math.random() * 6000 + 3000); // Random interval between 1s to 3s
+
+    return () => clearInterval(interval);
+  }, [camera.position]);
+
+  useFrame((state, delta) => {
     if (fishRef.current) {
-      fishRef.current.position.x += 0.05;
-      if (fishRef.current.position.x > 50) fishRef.current.position.x = -50;
+      // Calculate direction to the target position
+      const direction = new THREE.Vector3().subVectors(targetPosition, fishRef.current.position);
+      const distance = direction.length();
+
+      // Move the fish towards the target position
+      if (distance > 0.1) {
+        direction.normalize(); // Normalize to get unit vector
+        fishRef.current.position.addScaledVector(direction, delta * 6); // Move at a constant speed
+
+        // Rotate the fish to face the movement direction
+        const targetRotation = Math.atan2(direction.x, direction.z); // Calculate the direction in radians
+        fishRef.current.rotation.y = THREE.MathUtils.lerp(fishRef.current.rotation.y, targetRotation, 0.1); // Smooth rotation
+      }
     }
   });
 
   return (
-    <mesh ref={fishRef} position={position}>
-      <sphereGeometry args={[0.5, 16, 16]} />
-      <meshStandardMaterial color="orange" />
-    </mesh>
+      <primitive ref={fishRef} object={scene} scale={randomModel.scale} />
   );
 }
 
+function InfiniteFish({fishModels}) {
+  const fishPositions = Array.from({ length: 10 }, () => [
+    Math.random() * 1200 - 600,  // Random X position within range
+    Math.random() * 5 - 5,       // Random Y position within range
+    Math.random() * 100 - 50,    // Random Z position within range
+  ]);
+
+  return (
+      <>
+        {fishPositions.map((index) => (
+            <RoamingFish modelFiles={fishModels} key={index}  />
+        ))}
+      </>
+  );
+}
 
 // Bubbles component to simulate bubbles rising underwater
 function Bubbles() {
@@ -147,7 +190,7 @@ function Soil() {
 
   return (
       <mesh position={[0, -20, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[500, 500]} />
+        <planeGeometry args={[400, 400]} />
         <meshStandardMaterial
             map={texture} // Base texture
             normalMap={normalMap} // Normal map for additional bump detail
@@ -168,6 +211,33 @@ function CameraController() {
   camera.rotation.order = "YXZ";
   camera.rotation.y = 0;
   camera.rotation.x = -0.4;
+    const handleMouseMove = (event) => {
+      if (!mouseDown) return;
+
+      const deltaMove = { x: event.clientX - previousMousePosition.x, y: event.clientY - previousMousePosition.y };
+      camera.rotation.order = "YXZ";
+      camera.rotation.y -= deltaMove.x * 0.01;
+      camera.rotation.x = -0.4;
+      setPreviousMousePosition({ x: event.clientX, y: event.clientY });
+    };
+
+    const handleMouseUp = () => {
+      setMouseDown(false);
+    };
+
+
+    gl.domElement.addEventListener("mousedown", handleMouseDown);
+    gl.domElement.addEventListener("mousemove", handleMouseMove);
+    gl.domElement.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+
+      gl.domElement.removeEventListener("mousedown", handleMouseDown);
+      gl.domElement.removeEventListener("mousemove", handleMouseMove);
+      gl.domElement.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [camera, gl, mouseDown, previousMousePosition]);
+
 
   return null;
 }
@@ -206,9 +276,9 @@ function Plants({scale, number}) {
 
   // Generate random positions for the plants
   const plantPositions = Array.from({ length: number }, () => [
-    Math.random() * 1000 - 500,
+    Math.random() * 500 - 250,
     -20,
-    Math.random() * 1000 - 500,
+    Math.random() * 500 - 250,
   ]);
 
   if (plantModels.length === 0) return null; // Wait for models to load
