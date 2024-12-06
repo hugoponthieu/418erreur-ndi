@@ -239,9 +239,17 @@ function Bubbles() {
 
 function BottleController({ increment }) {
   const [bottles, setBottles] = useState([]);
+  const bottlesRef = useRef([]); // Keep a mutable reference to bottles
   const dispatch = useAppDispatch();
-
+  const autoClickers = useAppSelector(
+    (state) => state.counter.autoClickers,
+  );
   const { camera } = useThree();
+
+  useEffect(() => {
+    bottlesRef.current = bottles; // Sync bottles state with the ref
+  }, [bottles]);
+
   useEffect(() => {
     const generatePositionAroundCamera = () => {
       let position;
@@ -263,28 +271,37 @@ function BottleController({ increment }) {
       id: Math.random().toString(36).substring(7), // Generate a unique ID
     }));
     setBottles(initialBottles);
+    bottlesRef.current = initialBottles; // Sync initial state to ref
 
     const interval = setInterval(() => {
-      if (bottles.length > 50) {
-        return;
-      }
-      dispatch(incrementToxicity());
-      setBottles((prevBottles) => [
-        ...prevBottles,
-        {
+      // Add new bottles
+      if (bottlesRef.current.length <= 50) {
+        dispatch(incrementToxicity());
+        const newBottle = {
           position: generatePositionAroundCamera(),
-          id: Math.random().toString(36).substring(7), // Unique ID for each bottle
-        },
-      ]);
+          id: Math.random().toString(36).substring(7),
+        };
+        setBottles((prevBottles) => [...prevBottles, newBottle]);
+        bottlesRef.current = [...bottlesRef.current, newBottle]; // Update ref
+      }
+
+      // Remove bottles based on autoClickers
+      if (autoClickers > 0 && bottlesRef.current.length > 0) {
+        const bottlesToRemove = Math.min(autoClickers, bottlesRef.current.length);
+        const updatedBottles = bottlesRef.current.slice(bottlesToRemove);
+        setBottles(updatedBottles);
+        bottlesRef.current = updatedBottles; // Update ref
+        console.log("Removed bottles", bottlesToRemove);
+      }
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [camera]);
+  }, [camera, dispatch, autoClickers]);
 
   const handleRemoveBottle = (id) => {
-    setBottles((prevBottles) =>
-      prevBottles.filter((bottle) => bottle.id !== id),
-    );
+    const updatedBottles = bottles.filter((bottle) => bottle.id !== id);
+    setBottles(updatedBottles);
+    bottlesRef.current = updatedBottles; // Update ref
     increment();
   };
 
@@ -301,6 +318,7 @@ function BottleController({ increment }) {
     </>
   );
 }
+
 
 function Bottle({ position, onRemove }) {
   const bottleRef = useRef();

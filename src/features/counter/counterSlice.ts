@@ -100,6 +100,7 @@ export const counterSlice = createSlice({
     },
     autoClick: (state) => {
       state.value += state.autoClickers;
+      state.toxicity -= 2*state.autoClickers;
     },
     removeButton: (state, action: PayloadAction<string>) => {
       const buttonIndex = state.buttons.findIndex(
