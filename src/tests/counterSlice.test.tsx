@@ -6,7 +6,7 @@ import counterReducer, {
 
 describe("Counter Slice", () => {
   it("should return the initial state", () => {
-    expect(counterReducer(undefined, { type: undefined })).toEqual({
+    expect(counterReducer(undefined, { type: "" })).toEqual({
       value: 0,
     });
   });
