@@ -21,7 +21,6 @@ export function Game() {
   const toxicity = useAppSelector((state) => state.counter.toxicity);
   const temperature = useAppSelector((state) => state.counter.temperature);
   const overfishing = useAppSelector((state) => state.counter.overfishing);
-  const count = useAppSelector((state: RootState) => state.counter.value);
   const autoClickers = useAppSelector((state: RootState) => state.counter.autoClickers);
 
   const dispatch = useAppDispatch();
