@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { increment } from "@/features/counter/counterSlice.ts";
 import { useAppDispatch, useAppSelector } from "@/app/hooks.ts";
 import { RootState } from "@/app/store.ts";
+import UnderwaterWorld from "./UnderwaterWorld";
 
 export function Counter() {
   const count = useAppSelector((state: RootState) => state.counter.value);
@@ -22,14 +23,14 @@ export function Counter() {
   ]);
 
   // Mise à jour temps réel
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const currentTime = Date.now();
-      setGameTime(Math.floor((currentTime - startTimeRef.current) / 1000));
-    }, 1000);
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     const currentTime = Date.now();
+  //     setGameTime(Math.floor((currentTime - startTimeRef.current) / 1000));
+  //   }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+  //   return () => clearInterval(timer);
+  // }, []);
 
   const incrementCounter = (buttonId: number) => {
     dispatch(increment());
@@ -71,24 +72,27 @@ export function Counter() {
   };
 
   return (
-    <div style={{ position: 'relative', height: '100vh' }}>
-      <h1>Compteur: {count}</h1>
-      <p>Temps de jeu: {gameTime} secondes</p>
-      {buttons.map(button => (
-        button.show && (
-          <button 
-            key={button.id}
-            onClick={() => incrementCounter(button.id)}
-            style={{
-              position: 'absolute', 
-              top: button.position.top, 
-              left: button.position.left
-            }}
-          >
-            Plastique
-          </button>
-        )
-      ))}
+    <div className="h-screen relative flex">
+      <div className="z-10 h-full bg-transparent absolute">
+        <h1>Compteur: {count}</h1>
+        <p>Temps de jeu: {gameTime} secondes</p>
+        {buttons.map(button => (
+          button.show && (
+            <button 
+              key={button.id}
+              onClick={() => incrementCounter(button.id)}
+              style={{
+                position: 'absolute', 
+                top: button.position.top, 
+                left: button.position.left
+              }}
+            >
+              Plastique
+            </button>
+          )
+        ))}
+      </div>
+      <UnderwaterWorld />
     </div>
   );
 }
