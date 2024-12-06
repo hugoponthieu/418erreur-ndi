@@ -8,10 +8,12 @@ import {
 } from "@/components/ui/dialog-no-closed";
 import { Button } from "@/components/ui/button";
 import "./App.css";
+import { useNavigate } from "react-router";
 
 function App() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const navigate = useNavigate();
 
   const handleCheckboxChange = (checked: boolean) => {
     if (checked) {
@@ -47,7 +49,7 @@ function App() {
             size={"homepage"}
             disabled={!isChecked}
             className="w-fit relative bg-blue-400 rounded-lg border-none p-0 cursor-pointer outline-offset-4 active:outline-none"
-            onClick={() => window.location.href = "/game"}
+            onClick={() => navigate("/game")}
             >
             <span className="block px-10 py-6 rounded-lg text-2xl md:text-4xl text-white bg-blue-500 translate-y-[-6px] active:translate-y-[-2px]">
               PLAY
