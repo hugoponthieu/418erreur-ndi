@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 418-ndi
+  namespace: ndi
+  labels:
+    app: 418-ndi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: 418-ndi
+  template:
+    metadata:
+      labels:
+        app: 418-ndi
+    spec:
+      containers:
+      - name: 418-ndi
+        image: 418-ndi:latest
+        ports:
+        - containerPort: 80
+        imagePullPolicy: Always

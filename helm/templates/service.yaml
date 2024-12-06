@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: 418-ndi
+  namespace: ndi
+spec:
+  selector:
+    app.kubernetes.io/name: 418-ndi
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
