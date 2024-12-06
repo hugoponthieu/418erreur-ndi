@@ -83,7 +83,7 @@ function FishNavigator(props) {
     const currentPosition = ref.current.position;
     const direction = new THREE.Vector3().subVectors(targetPosition, currentPosition);
     const distance = direction.length();
-    const moveDistance = Math.min(distance, delta * 10); // Adjust speed
+    const moveDistance = Math.min(distance, delta * 20); // Adjust speed
   
     if (distance > 0.1) {
       if (!isMoving) {
@@ -118,10 +118,10 @@ function FishNavigator(props) {
   
     if (screenX < edgeThreshold) {
       // Rotate slightly to the left
-      targetYRotation += 0.05; // Adjust target angle change as needed
+      targetYRotation += 0.1; // Adjust target angle change as needed
     } else if (screenX > 1 - edgeThreshold) {
       // Rotate slightly to the right
-      targetYRotation -= 0.05; // Adjust target angle change as needed
+      targetYRotation -= 0.1; // Adjust target angle change as needed
     }
   
     // Smooth rotation using lerp
