@@ -1,26 +1,27 @@
-import { useState, useRef, useEffect } from "react";
+// import { useState, useRef } from "react";
 import { increment } from "@/features/counter/counterSlice.ts";
 import { useAppDispatch, useAppSelector } from "@/app/hooks.ts";
 import { RootState } from "@/app/store.ts";
-import UnderwaterWorld from "./UnderwaterWorld";
+// @ts-ignore
+import UnderwaterWorld from "./UnderwaterWorld.jsx";
 
 export function Counter() {
   const count = useAppSelector((state: RootState) => state.counter.value);
   const dispatch = useAppDispatch();
 
-  const startTimeRef = useRef(Date.now());
-  const [gameTime, setGameTime] = useState(0);
+  // const startTimeRef = useRef(Date.now());
+  // const [gameTime, setGameTime] = useState(0);
 
-  const [buttons, setButtons] = useState<Array<{id: number, show: boolean, position: {top: number, left: number}}>>([
-    {
-      id: 1, 
-      show: true, 
-      position: {
-        top: Math.random() * (window.innerHeight - 50),
-        left: Math.random() * (window.innerWidth - 100)
-      }
-    }
-  ]);
+  // const [buttons, setButtons] = useState<Array<{id: number, show: boolean, position: {top: number, left: number}}>>([
+  //   {
+  //     id: 1, 
+  //     show: true, 
+  //     position: {
+  //       top: Math.random() * (window.innerHeight - 50),
+  //       left: Math.random() * (window.innerWidth - 100)
+  //     }
+  //   }
+  // ]);
 
   const incrementCounter = () => {
     dispatch(increment());
