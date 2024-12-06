@@ -20,16 +20,16 @@ function ShopItem({ currentAmount, name, price }: KeyProps) {
   const sellPrice = price * 0.7;
 
   return (
-    <div className="flex flex-row justify-between p-1 group hover:bg-retropink m-2 items-center">
+    <div className="flex flex-row justify-between p-1 group hover:bg-retropink m-2 items-center ">
       <div className="flex flex-row justify-start items-center gap-10">
-        <p className="font-pressstart">{currentAmount}x</p>
-        <div className="flex flex-col">
+        <p className="font-pressstart text-white">{currentAmount}x</p>
+        <div className="flex flex-col  max-w-[300px]">
           <p className="font-pressstart text-retropink group-hover:text-black text-lg">
             {name}
           </p>
           <div className="flex flex-row gap-1">
-            <MoneyIcon color="black" size={20} />
-            <p className="font-pressstart">{price}</p>
+            <MoneyIcon color="white" size={20} />
+            <p className="font-pressstart text-white">{price}</p>
           </div>
         </div>
       </div>
@@ -47,9 +47,9 @@ function ShopItem({ currentAmount, name, price }: KeyProps) {
 
 export function ShopTable({ title, items }: ShopTableProps) {
   return (
-    <div className=" border-x-black pixel-border-lg border-b-black">
-      <div className="w-full bg-black py-2">
-        <h3 className="ml-1 text-white font-pressstart uppercase font-extrabold ">
+    <div className=" border-x-white pixel-border-lg-white border-b-white backdrop-blur">
+      <div className="w-full bg-white py-2">
+        <h3 className="ml-1 text-black font-pressstart uppercase font-extrabold ">
           {title}
         </h3>
       </div>

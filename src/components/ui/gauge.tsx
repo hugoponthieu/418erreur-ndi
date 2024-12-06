@@ -23,7 +23,7 @@ export function Gauge({ color, percentage, label }: GaugeProps) {
             key={`filled-green-${i}`}
             data-testid="filled-bar"
             className={`h-4 flex-1 bg-retrogreen`}
-          ></div>
+          ></div>,
         );
         break;
       case "blue":
@@ -32,7 +32,7 @@ export function Gauge({ color, percentage, label }: GaugeProps) {
             key={`filled-blue-${i}`}
             data-testid="filled-bar"
             className="h-4 flex-1 bg-retroblue"
-          ></div>
+          ></div>,
         );
         break;
       default:
@@ -41,7 +41,7 @@ export function Gauge({ color, percentage, label }: GaugeProps) {
             key={`filled-pink-${i}`}
             data-testid="filled-bar"
             className="h-4 flex-1 bg-retropink"
-          ></div>
+          ></div>,
         );
         break;
     }
@@ -53,14 +53,14 @@ export function Gauge({ color, percentage, label }: GaugeProps) {
         key={`empty-${k}`}
         data-testid="empty-bar"
         className="h-4 flex-1 bg-transparent"
-      ></div>
+      ></div>,
     );
   }
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>
-          <div className="pixel-border border-red w-fit">
+          <div className="pixel-border-white border-red w-fit">
             <div className="flex flex-row w-[100px] gap-[2px] justify-start p-1">
               {bars.map((bar) => bar)}
             </div>
