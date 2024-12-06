@@ -22,60 +22,50 @@ export function Counter() {
     }
   ]);
 
-  // Mise à jour temps réel
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     const currentTime = Date.now();
-  //     setGameTime(Math.floor((currentTime - startTimeRef.current) / 1000));
-  //   }, 1000);
-
-  //   return () => clearInterval(timer);
-  // }, []);
-
-  const incrementCounter = (buttonId: number) => {
+  const incrementCounter = () => {
     dispatch(increment());
 
-    setButtons(prevButtons => 
-      prevButtons.map(button => 
-        button.id === buttonId 
-          ? { ...button, show: false } 
-          : button
-      )
-    );
+    // setButtons(prevButtons => 
+    //   prevButtons.map(button => 
+    //     button.id === buttonId 
+    //       ? { ...button, show: false } 
+    //       : button
+    //   )
+    // );
 
-    // Temps aléatoire avant l'apparition du prochain bouton
-    setTimeout(() => {
-      setButtons(prevButtons => {
-        const newButton = {
-          id: Math.max(...prevButtons.map(b => b.id)) + 1,
-          show: true,
-          position: {
-            top: Math.random() * (window.innerHeight - 50),
-            left: Math.random() * (window.innerWidth - 100)
-          }
-        };
+    // // Temps aléatoire avant l'apparition du prochain bouton
+    // setTimeout(() => {
+    //   setButtons(prevButtons => {
+    //     const newButton = {
+    //       id: Math.max(...prevButtons.map(b => b.id)) + 1,
+    //       show: true,
+    //       position: {
+    //         top: Math.random() * (window.innerHeight - 50),
+    //         left: Math.random() * (window.innerWidth - 100)
+    //       }
+    //     };
 
-        return prevButtons.map(button => 
-          button.id === buttonId 
-            ? { 
-                ...button, 
-                show: true,
-                position: {
-                  top: Math.random() * (window.innerHeight - 50),
-                  left: Math.random() * (window.innerWidth - 100)
-                }
-              }
-            : button
-        ).concat(newButton);
-      });
-    }, Math.random() * 5000); // Entre 0 et 5 secondes
+    //     return prevButtons.map(button => 
+    //       button.id === buttonId 
+    //         ? { 
+    //             ...button, 
+    //             show: true,
+    //             position: {
+    //               top: Math.random() * (window.innerHeight - 50),
+    //               left: Math.random() * (window.innerWidth - 100)
+    //             }
+    //           }
+    //         : button
+    //     ).concat(newButton);
+    //   });
+    // }, Math.random() * 5000); // Entre 0 et 5 secondes
   };
 
   return (
     <div className="h-screen relative flex">
       <div className="z-10 bg-transparent absolute">
         <h1>Compteur: {count}</h1>
-        <p>Temps de jeu: {gameTime} secondes</p>
+        {/* <p>Temps de jeu: {gameTime} secondes</p>
         {buttons.map(button => (
           button.show && (
             <button 
@@ -90,9 +80,9 @@ export function Counter() {
               Plastique
             </button>
           )
-        ))}
+        ))} */}
       </div>
-      <UnderwaterWorld />
+      <UnderwaterWorld increment={incrementCounter}/>
     </div>
   );
 }

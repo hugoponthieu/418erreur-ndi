@@ -7,9 +7,12 @@ import * as THREE from 'three';
 import { useRef, useEffect, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import {MTLLoader, OBJLoader, Water} from 'three-stdlib';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+  import { Raycaster } from 'three';
 
-const UnderwaterWorld = () => {
+const UnderwaterWorld = (props) => {
   const colors = [0x064e40, 0x0dad8d, 0x8dd8cc, 0x30bfbf, 0x0c98ba, 0x1164b4];
+  const increment = props.increment;
   const fishModels = [
     {name:"./goldfish.glb",scale:[0.5,0.5,0.5]},
     {name:"./koi.glb",scale: [0.1,0.1,0.1]},
@@ -30,6 +33,7 @@ const UnderwaterWorld = () => {
       <RoamingFish />
       <Ocean color={colors[Math.floor(Math.random() * colors.length)]} />
       <InfiniteFish fishModels={fishModels} />
+      <BottleController increment={increment} />
       <Plants scale={50} number={200}/>
       <Soil />
       <Bubbles /> {/* Add bubbles to the scene */}
@@ -135,6 +139,109 @@ function RoamingFish({modelFiles}) {
   return (
       <primitive ref={fishRef} object={scene} scale={randomModel.scale} />
   );
+}
+
+function BottleController({ increment }) {
+  const [bottles, setBottles] = useState([]);
+
+  const { camera } = useThree();
+  useEffect(() => {
+    const generatePositionAroundCamera = () => {
+      let position;
+      do {
+      position = [
+        camera.position.x + (Math.random() * 150 - 75),
+        camera.position.y + (Math.random() * 20 - 30),
+        camera.position.z + (Math.random() * 150 - 75),
+      ];
+      } while (Math.abs(position[0] - camera.position.x) < 30 &&
+           Math.abs(position[2] - camera.position.z) < 10);
+      return position;
+    };
+
+    const initialBottles = Array.from({ length: 10 }, () => ({
+      position: generatePositionAroundCamera(),
+      id: Math.random().toString(36).substring(7), // Generate a unique ID
+    }));
+    setBottles(initialBottles);
+
+    const interval = setInterval(() => {
+      setBottles((prevBottles) => [
+        ...prevBottles,
+        {
+          position: generatePositionAroundCamera(),
+          id: Math.random().toString(36).substring(7), // Unique ID for each bottle
+        },
+      ]);
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [camera]);
+
+  const handleRemoveBottle = (id) => {
+    setBottles((prevBottles) => prevBottles.filter((bottle) => bottle.id !== id));
+    increment();
+  };
+
+  return (
+    <>
+      {bottles.map((bottle) => (
+        <Bottle
+          key={bottle.id}
+          position={bottle.position}
+          increment={increment}
+          onRemove={() => handleRemoveBottle(bottle.id)}
+        />
+      ))}
+    </>
+  );
+}
+
+function Bottle({ position, onRemove }) {
+  const bottleRef = useRef();
+  const { camera } = useThree();
+  const [bottleModel, setBottleModel] = useState(null);
+
+  useEffect(() => {
+    const loader = new GLTFLoader();
+    loader.load('/bottle.glb', (gltf) => {
+      setBottleModel(gltf.scene);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (bottleModel) {
+      bottleModel.position.set(position[0], position[1], position[2]);
+      bottleModel.rotation.set(
+        Math.random() * Math.PI * 2,
+        Math.random() * Math.PI * 2,
+        Math.random() * Math.PI * 2
+      );
+      bottleRef.current.add(bottleModel);
+    }
+  }, [bottleModel, position]);
+
+  useEffect(() => {
+    const handleClick = (event) => {
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2();
+
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects([bottleRef.current], true);
+
+      if (intersects.length > 0 && bottleModel) {
+        onRemove(); // Trigger bottle removal
+      }
+    };
+
+    window.addEventListener('click', handleClick);
+    return () => window.removeEventListener('click', handleClick);
+  }, [bottleModel, camera, onRemove]);
+
+  return <group ref={bottleRef} scale={1} />;
 }
 
 function InfiniteFish({fishModels}) {
