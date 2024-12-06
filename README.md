@@ -11,9 +11,12 @@
 ## Défis principal de la nuit
 
 Nous avons décidé de créer une application web jeu vidéo (défi "On va jouer à un jeu") avec un style rétro (défi "On veut du gros pixel") dans lequel nous avons intégré un CAPTCHA ludique (défi "Game Tcha") et un système de qualité avec des tests de notre application après chaque push de code sur la branche main de notre repository (défi "Mise en place de la qualité"). Nous incarnerons un poisson dans l'océan 3D (défi "3D Social"). L'objectif était d'intégir avec des déchets pour les recycler et récupérer de l'argent. Trois métriques sont présentes sur l'écran :
+
 - L'acidité de l'eau
 - Le taux de déchets dans l'eau
 - La chaleur de l'eau
+
+Cliquez sur chacune des jauges et items à acheter pour avoir des informations supplémentaires sur de potentiels solutions pour sauver les océans !
 
 En faisant de l'argent, le joueur peut acheter des améliorations pour son poisson et ainsi augmenter ses chances de survie en baissant l'acidité de l'eau, le taux de déchets et la chaleur de l'eau.
 En fonction de la qualité des métriques, les couleurs et l'environnement de l'océan changent.
@@ -50,3 +53,4 @@ Puis, vous pouvez lancer le projet avec la commande suivante :
 pnpm install
 pnpm run dev
 ```
+
