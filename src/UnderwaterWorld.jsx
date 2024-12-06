@@ -11,7 +11,7 @@ import {MTLLoader, OBJLoader, Water} from 'three-stdlib';
 const UnderwaterWorld = () => {
   const colors = [0x064e40, 0x0dad8d, 0x8dd8cc, 0x30bfbf, 0x0c98ba, 0x1164b4];
   return (
-    <Canvas dpr={[1,2]} camera={{ position: new THREE.Vector3(0, 20, 50), fov: 25 }}>
+    <Canvas dpr={[1,2]} camera={{ position: new THREE.Vector3(0, 20, 50), fov: 30 }}>
       <ambientLight intensity={1} />
       <directionalLight position={[10, 10, 0]} intensity={5} />
         <directionalLight position={[-10, 10, 5]} intensity={5} />
@@ -163,43 +163,11 @@ function Soil() {
 
 // Camera controls component
 function CameraController() {
-  const { camera, gl } = useThree();
-  const [mouseDown, setMouseDown] = useState(false);
-  const [previousMousePosition, setPreviousMousePosition] = useState({ x: 0, y: -20 });
-  useEffect(() => {
-    const handleMouseDown = (event) => {
-      setMouseDown(true);
-      setPreviousMousePosition({ x: event.clientX, y: event.clientY });
-    };
+  const { camera } = useThree();
 
-    const handleMouseMove = (event) => {
-      if (!mouseDown) return;
-
-      const deltaMove = { x: event.clientX - previousMousePosition.x, y: event.clientY - previousMousePosition.y };
-      camera.rotation.order = "YXZ";
-      camera.rotation.y -= deltaMove.x * 0.01;
-      camera.rotation.x = -0.4;
-      setPreviousMousePosition({ x: event.clientX, y: event.clientY });
-    };
-
-    const handleMouseUp = () => {
-      setMouseDown(false);
-    };
-
-
-    gl.domElement.addEventListener("mousedown", handleMouseDown);
-    gl.domElement.addEventListener("mousemove", handleMouseMove);
-    gl.domElement.addEventListener("mouseup", handleMouseUp);
-
-    return () => {
-
-      gl.domElement.removeEventListener("mousedown", handleMouseDown);
-      gl.domElement.removeEventListener("mousemove", handleMouseMove);
-      gl.domElement.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [camera, gl, mouseDown, previousMousePosition]);
-
-  console.log(camera.rotation);
+  camera.rotation.order = "YXZ";
+  camera.rotation.y = 0;
+  camera.rotation.x = -0.4;
 
   return null;
 }
