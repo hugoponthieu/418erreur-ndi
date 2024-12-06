@@ -21,7 +21,7 @@ function ShopItem({ currentAmount, name, price }: KeyProps) {
   return (
     <div className="flex flex-row justify-between p-1 group hover:bg-retropink m-2 items-center">
       <div className="flex flex-row justify-start items-center gap-10">
-        <p className="font-pressstart">{currentAmount}x</p>
+        <p className="font-pressstart">{currentAmount}€</p>
         <div className="flex flex-col">
           <p className="font-pressstart text-retropink group-hover:text-black text-lg">
             {name}

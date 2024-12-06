@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import counterReducer from '../features/counter/counterSlice'
+import autoClickerMiddleware from '@/features/counter/autoClicker'
 
 export const store = configureStore({
     reducer: {
         counter: counterReducer
-    }
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(autoClickerMiddleware),
 })
 
 // Infer the `RootState`,  `AppDispatch`, and `AppStore` types from the store itself
