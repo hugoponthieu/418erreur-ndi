@@ -54,11 +54,10 @@
 //   const incrementCounter = (buttonId: number) => {
 //     dispatch(increment());
 
-
-//     setButtons(prevButtons => 
-//       prevButtons.map(button => 
-//         button.id === buttonId 
-//           ? { ...button, show: false } 
+//     setButtons(prevButtons =>
+//       prevButtons.map(button =>
+//         button.id === buttonId
+//           ? { ...button, show: false }
 //           : button
 //       )
 
@@ -69,7 +68,6 @@
 //       ),
 //         button.id === buttonId ? { ...button, show: false } : button
 //       )
-
 //     );
 
 //     // Temps aléatoire avant l'apparition du prochain bouton
@@ -84,11 +82,10 @@
 //           }
 //         };
 
-
-//         return prevButtons.map(button => 
-//           button.id === buttonId 
-//             ? { 
-//                 ...button, 
+//         return prevButtons.map(button =>
+//           button.id === buttonId
+//             ? {
+//                 ...button,
 //                 show: true,
 //                 position: {
 //                   top: Math.random() * (window.innerHeight - 50),
@@ -123,7 +120,7 @@
 //       item.effect();
 //     }
 //   }
-  
+
 //   const incrementCounter = () => {
 //     dispatch(increment());
 //   };
@@ -145,7 +142,7 @@
 //             </div>
 //           ))}
 //         </div>
-        
+
 //       <UnderwaterWorld />
 //     </div>
 //   );

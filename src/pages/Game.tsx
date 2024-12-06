@@ -6,15 +6,36 @@ import { Gauge } from "@/components/ui/gauge";
 import { ToxicityIcon } from "@/components/icons/toxicity";
 import { OceanHeightIcon } from "@/components/icons/ocean_height";
 import { MoneyCounter } from "@/components/ui/money_counter";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import {
+  incrementOverfishing,
+  incrementTemperature,
+  incrementToxicity,
+} from "@/features/counter/counterSlice";
 
 export function Game() {
-
   const [plastic, setPlastic] = useState(0);
+  const toxicity = useAppSelector((state) => state.counter.toxicity);
+  const temperature = useAppSelector((state) => state.counter.temperature);
+  const overfishing = useAppSelector((state) => state.counter.overfishing);
 
-  useMemo(function incrementPlastic() {
-    setPlastic(plastic + 1);
-  }, [setPlastic]);
+  const dispatch = useAppDispatch();
+
+  useMemo(
+    function incrementPlastic() {
+      setPlastic(plastic + 1);
+    },
+    [setPlastic],
+  );
+
+  useEffect(() => {
+    setInterval(() => {
+      dispatch(incrementToxicity());
+      dispatch(incrementTemperature());
+      dispatch(incrementOverfishing());
+    }, 5000);
+  }, []);
 
   return (
     <div className="h-screen">
@@ -71,7 +92,7 @@ export function Game() {
           <Gauge
             color="green"
             label="Toxicity"
-            percentage={30}
+            percentage={toxicity}
             informations={{
               title: "Toxicity",
               description:
@@ -84,7 +105,7 @@ export function Game() {
           <Gauge
             color="blue"
             label="Overfishing"
-            percentage={30}
+            percentage={overfishing}
             informations={{
               title: "Ocean's height",
               description:
@@ -97,7 +118,7 @@ export function Game() {
           <Gauge
             color="pink"
             label="Temperature"
-            percentage={30}
+            percentage={temperature}
             informations={{
               title: "Temperature",
               description:
@@ -110,7 +131,7 @@ export function Game() {
       <div className="z-10 bg-transparent absolute left-5 bottom-5 flex flex-col gap-2">
         <MoneyCounter />
       </div>
-      <UnderwaterWorld/>
+      <UnderwaterWorld />
     </div>
   );
 }
