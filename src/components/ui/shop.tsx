@@ -1,8 +1,10 @@
+import React, { useState } from "react";
 import { Informations } from "@/lib/infos";
 import { MoneyIcon } from "../icons/money";
 import { RetroButton } from "./button";
 import { Dialog, DialogTrigger } from "./dialog";
 import { RetroDialog } from "./retro-dialog";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.tsx";
 
 interface ShopItemProps {
   currentAmount: number;
@@ -10,6 +12,7 @@ interface ShopItemProps {
   price: number;
   informations: Informations;
 }
+
 interface KeyProps extends ShopItemProps {
   key: number;
 }
@@ -51,24 +54,49 @@ function ShopItem({ currentAmount, name, price, informations }: KeyProps) {
 }
 
 export function ShopTable({ title, items }: ShopTableProps) {
+  const [isOpen, setIsOpen] = useState(false); // Dropdown toggle state
+
   return (
-    <div className=" border-x-white pixel-border-lg-white border-b-white backdrop-blur">
-      <div className="w-full bg-white py-2">
-        <h3 className="ml-1 text-black font-pressstart uppercase font-extrabold text-sm">
-          {title}
-        </h3>
-      </div>
-      {items.map((props, index) => {
-        return (
-          <ShopItem
-            currentAmount={props.currentAmount}
-            informations={props.informations}
-            name={props.name}
-            price={props.price}
-            key={index}
-          />
-        );
-      })}
+    <div className="border-x-white pixel-border-lg-white border-b-white backdrop-blur">
+      {/* Title and Dropdown Toggle */}
+      <TooltipProvider >
+        <Tooltip>
+          <TooltipTrigger className="w-full border-x-white pixel-border-lg-white border-b-white backdrop-blur">
+            <div
+              className="w-full bg-white py-2 flex items-center justify-between cursor-pointer"
+              onClick={() => setIsOpen(!isOpen)} // Toggle visibility
+            >
+              <h3 className="ml-1 text-black font-pressstart uppercase font-extrabold text-sm">
+                {title}
+              </h3>
+              <p className="mr-4 font-pressstart text-retropink">
+                        <div className="pixel-border-white border-red w-fit">
+                            {isOpen ? "▲" : "▼"} {/* Icon for dropdown toggle */}
+                        </div>
+
+              </p>
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p className="font-pressstart text-xs">Expand</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      {/* Conditional Rendering of Items */}
+      {isOpen && (
+        <div>
+          {items.map((props, index) => (
+            <ShopItem
+              currentAmount={props.currentAmount}
+              informations={props.informations}
+              name={props.name}
+              price={props.price}
+              key={index}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
