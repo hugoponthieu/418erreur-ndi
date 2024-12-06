@@ -1,9 +1,9 @@
-import { addAutoClicker, startAutoClickers } from "@/features/counter/counterSlice";
+import { addAutoClicker, decrement, startAutoClickers } from "@/features/counter/counterSlice";
 import { useState } from "react";
 import { Informations } from "@/lib/infos";
 import { MoneyIcon } from "../icons/money";
 import { RetroButton } from "./button";
-import { useAppSelector } from "@/app/hooks";
+import { useAppSelector, useAppDispatch } from "@/app/hooks";
 import { RootState } from "@/app/store";
 import { Dialog, DialogTrigger } from "./dialog";
 import { RetroDialog } from "./retro-dialog";
@@ -29,14 +29,17 @@ function ShopItem({ currentAmount, name, price, informations }: KeyProps) {
   const sellPrice = price * 0.7;
   const count = useAppSelector((state: RootState) => state.counter.value);
   const autoClickers = useAppSelector((state: RootState) => state.counter.autoClickers);
+  const dispatch = useAppDispatch();
   const incrementAutoClicker = () => dispatch(addAutoClicker());
 
   const buyItem = () => {
-    if (currentAmount >= price) {
-      autoClickers
+    if (count >= price) {
+      // Déduire le prix
+      dispatch(decrement(price));
+      dispatch(addAutoClicker());
+      dispatch(startAutoClickers());
     }
-  };
-
+  }
   return (
     <div className="flex flex-row justify-between p-1 group hover:bg-retropink m-2 items-center">
       <div className="flex flex-row justify-start items-center gap-10">
@@ -102,5 +105,6 @@ export function ShopTable({ title, items }: ShopTableProps) {
         </div>
       )}
     </div>
-  )
+  );
 }
+

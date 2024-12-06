@@ -22,6 +22,7 @@ export function Game() {
   const temperature = useAppSelector((state) => state.counter.temperature);
   const overfishing = useAppSelector((state) => state.counter.overfishing);
   const count = useAppSelector((state: RootState) => state.counter.value);
+  const autoClickers = useAppSelector((state: RootState) => state.counter.autoClickers);
 
   const dispatch = useAppDispatch();
 
@@ -78,8 +79,8 @@ export function Game() {
           items={[
             {
               name: "Seagrasses",
-              currentAmount: count,
-              price: 10,
+              currentAmount: autoClickers,
+              price: 10*Math.pow(2, autoClickers),
               informations: {
                 title: "Seagrasses",
                 description:
