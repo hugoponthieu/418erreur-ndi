@@ -42,11 +42,8 @@ function ShopItem({ currentAmount, name, price, informations }: KeyProps) {
         </Dialog>
       </div>
       <div className="flex flex-row gap-2">
-        <RetroButton particle="✅" legend={`Buy for ${price}`}>
-          <p className="font-pressstart">+</p>
-        </RetroButton>
-        <RetroButton particle="💸" legend={`Sell for ${sellPrice}`}>
-          <p className="font-pressstart">-</p>
+        <RetroButton particle="💰" legend={`Buy for ${price}`}>
+          <p className="font-pressstart">Buy</p>
         </RetroButton>
       </div>
     </div>
