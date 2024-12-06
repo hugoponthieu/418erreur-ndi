@@ -122,6 +122,10 @@ export function Counter() {
       dispatch(decrement(item.price));
       item.effect();
     }
+  }
+  
+  const incrementCounter = () => {
+    dispatch(increment());
   };
 
   return (
