@@ -19,6 +19,7 @@ import { HelpButton } from "@/components/ui/help";
 export function Game() {
   const [plastic, setPlastic] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [gameWon, setGameWon] = useState(false);
 
   const toxicity = useAppSelector((state) => state.counter.toxicity);
   const temperature = useAppSelector((state) => state.counter.temperature);
@@ -47,6 +48,9 @@ export function Game() {
     if (toxicity >= 100 || temperature >= 100 || overfishing >= 100) {
       setGameOver(true);
     }
+    else if (toxicity <= 0 && temperature <= 0 && overfishing <= 0) {
+      setGameWon(true);
+    }
   }, [toxicity, temperature, overfishing]);
 
   return (
@@ -56,6 +60,12 @@ export function Game() {
           <p className="font-pressstart">
             You lost the game because the ocean is too toxic, too hot and there
             is too much overfishing. You can try again by refreshing the page.
+          </p>
+        </OldDialog>
+        <OldDialog header="You won !" isDialogOpen={gameWon}>
+          <p className="font-pressstart">
+            You won the game ! You managed to keep the ocean clean, not too hot
+            and not too overfished. You can try again by refreshing the page.
           </p>
         </OldDialog>
         <ShopTable

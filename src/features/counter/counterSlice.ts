@@ -13,6 +13,8 @@ export interface CounterState {
   isAutoClickerRunning: boolean;
   buttons: Button[];
   scaleCoeff: number;
+  stopOverfishing: boolean;
+  stopTemperature: boolean;
 }
 
 interface Button {
@@ -29,6 +31,8 @@ const initialState: CounterState = {
   autoClickers: 0,
   isAutoClickerRunning: false,
   scaleCoeff: 1,
+  stopOverfishing: false,
+  stopTemperature: false,
   buttons: [
     {
       id: uuidv4(),
@@ -71,12 +75,14 @@ export const counterSlice = createSlice({
       state.toxicity += 2;
     },
     incrementOverfishing: (state) => {
+      if (state.stopOverfishing) return;
       if (state.overfishing > 100) {
         return;
       }
       state.overfishing += 10;
     },
     incrementTemperature: (state) => {
+      if (state.stopTemperature) return;
       if (state.temperature > 100) {
         return;
       }
@@ -88,9 +94,11 @@ export const counterSlice = createSlice({
     },
     resetOverfishing: (state) => {
       state.overfishing = 0;
+      state.stopOverfishing = true;
     },
     resetTemperature: (state) => {
       state.temperature = 0;
+      state.stopTemperature = true;
     },
     incrementByAmount: (state, action: PayloadAction<number>) => {
       state.value += action.payload;
