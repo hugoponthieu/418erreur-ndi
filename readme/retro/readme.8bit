@@ -1,4 +1,4 @@
-> **418Erreur** : Dorian Grasset - Benoit Planche - Pauline Contat - Dorian Têtu - Tristan-Mihai Radulescu - Hugo Ponthieu
+> **418Erreur** : Dorian Grasset - Benoit Planche - Pauline Contat - Dorian Têtu - Tristan-Mihai Radulescu - Hugo Ponthieu - Louis Labeyrie
 
 # Nuit de l'info 2024
 

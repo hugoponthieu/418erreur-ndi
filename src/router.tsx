@@ -1,8 +1,12 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import App from "./App";
-import { Components } from "./pages/Components";
-import Counter from "./Counter";
 import { Game } from "./pages/Game";
+import { useAccess } from "./components/ui/access-provider";
+
+const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+  const { canAccessGame } = useAccess();
+  return canAccessGame ? children : <Navigate to="/" />;
+};
 
 export const router = createBrowserRouter([
   {
@@ -10,11 +14,11 @@ export const router = createBrowserRouter([
     Component: App,
   },
   {
-    path: "/components",
-    Component: Components,
-  },
-  {
     path: "/game",
-    Component: Game,
+    Component: () => (
+      <ProtectedRoute>
+        <Game />
+      </ProtectedRoute>
+    ),
   },
 ]);
