@@ -35,9 +35,9 @@ export default {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
-        green: "#00FF4D",
-        blue: "#92DCE5",
-        pink: "#FF66D8",
+        retrogreen: "#00FF4D",
+        retroblue: "#92DCE5",
+        retropink: "#FF66D8",
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",

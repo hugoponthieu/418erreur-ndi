@@ -35,7 +35,7 @@ function App() {
             <div>W</div>
             <img
               className="object-contain h-[60px] md:h-[90px] pb-2"
-              src="src/assets/water-drop.png"
+              src="/water-drop.png"
               alt="Water Drop"
             />
             <div>TER</div>
