@@ -43,7 +43,7 @@ export function Game({ maxScore, setWin }: GameProps) {
     if (score >= maxScore) {
       setWin();
     }
-  }, [score]);
+  }, [maxScore, score, setWin]);
 
   const flyLocal = () => {
     dispatch(fly());
@@ -56,23 +56,24 @@ export function Game({ maxScore, setWin }: GameProps) {
       gameLoop = setInterval(() => {
         dispatch(fall());
         dispatch(running());
-      }, 200);
+      }, 160);
 
       pipeGenerator = setInterval(() => {
         dispatch(generate());
-      }, 3000);
+      }, 2000);
+
       setTimeout(() => {
         setScore((prev) => prev + 1);
-        scoreTime()
-      }, 6000);
+      }, 5500);
       dispatch(start());
     }
   };
-  const scoreTime = () => {
-    scoreCounter = setInterval(() => {
-      setScore((prev) => prev + 1);
-    }, 4500);
-  };
+  useEffect(() => {
+    if (score === 1)
+      scoreCounter = setInterval(() => {
+        setScore((prev) => prev + 1);
+      }, 3000);
+  }, [score]);
 
   useEffect(() => {
     const birdY = fishState.y;
@@ -97,9 +98,9 @@ export function Game({ maxScore, setWin }: GameProps) {
       dispatch(gameOverCoral());
       dispatch(gameOverTcha());
       dispatch(gameOverFish());
+      clearInterval(scoreCounter);
       clearInterval(gameLoop);
       clearInterval(pipeGenerator);
-      clearInterval(scoreCounter);
       setScore(0);
     }
 
@@ -113,9 +114,9 @@ export function Game({ maxScore, setWin }: GameProps) {
         dispatch(gameOverCoral());
         dispatch(gameOverTcha());
         dispatch(gameOverFish());
+        clearInterval(scoreCounter);
         clearInterval(gameLoop);
         clearInterval(pipeGenerator);
-        clearInterval(scoreCounter);
         setScore(0);
       }
     }
