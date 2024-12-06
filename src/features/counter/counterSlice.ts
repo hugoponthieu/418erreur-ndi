@@ -23,7 +23,7 @@ interface Button {
 
 const initialState: CounterState = {
   value: 0,
-  toxicity: 1,
+  toxicity: 20,
   overfishing: 0,
   temperature: 0,
   autoClickers: 0,
@@ -47,6 +47,7 @@ export const counterSlice = createSlice({
   reducers: {
     increment: (state, action: PayloadAction<string>) => {
       state.value += 1;
+      state.toxicity -= 2;
       for (let i = 0; i < state.scaleCoeff; i++) {
         state.buttons = state.buttons.filter(
           (button) => button.id != action.payload,
@@ -67,7 +68,7 @@ export const counterSlice = createSlice({
       if (state.toxicity > 100) {
         return;
       }
-      state.toxicity += 10;
+      state.toxicity += 2;
     },
     incrementOverfishing: (state) => {
       if (state.overfishing > 100) {
@@ -83,6 +84,7 @@ export const counterSlice = createSlice({
     },
     decrement: (state, action) => {
       state.value -= action.payload;
+      state.toxicity -= 2;
     },
     incrementByAmount: (state, action: PayloadAction<number>) => {
       state.value += action.payload;

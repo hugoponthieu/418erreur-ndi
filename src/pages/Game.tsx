@@ -39,10 +39,9 @@ export function Game() {
 
   useEffect(() => {
     setInterval(() => {
-      dispatch(incrementToxicity());
       dispatch(incrementTemperature());
       dispatch(incrementOverfishing());
-    }, 5000);
+    }, 30000);
   }, []);
 
   useEffect(() => {
