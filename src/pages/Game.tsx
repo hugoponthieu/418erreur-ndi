@@ -4,6 +4,7 @@ import { TemperatureIcon } from "@/components/icons/temperature";
 import { Gauge } from "@/components/ui/gauge";
 import { ToxicityIcon } from "@/components/icons/toxicity";
 import { OceanHeightIcon } from "@/components/icons/ocean_height";
+import { MoneyCounter } from "@/components/ui/money_counter";
 export function Game() {
   return (
     <div className="h-screen">
@@ -32,7 +33,10 @@ export function Game() {
           <TemperatureIcon color="#FF66D8" size={30} />
           <Gauge color="pink" label="Temperature" percentage={30} />
         </div>
-        <div></div>
+      </div>
+
+      <div className="z-10 bg-transparent absolute left-5 bottom-5 flex flex-col gap-2">
+        <MoneyCounter count={0} />
       </div>
       <UnderwaterWorld />
     </div>

@@ -6,8 +6,8 @@ interface MoneyCounterProps {
 export function MoneyCounter({ count }: MoneyCounterProps) {
   return (
     <div className="flex flex-row gap-2 items-center">
-      <MoneyIcon color="black" size={25} />
-      <p className="font-pressstart">{count}</p>
+      <MoneyIcon color="white" size={25} />
+      <p className="font-pressstart text-white">{count}</p>
     </div>
   );
 }

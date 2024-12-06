@@ -16,19 +16,19 @@ export function Effects() {
     const pixelatePass = new ShaderPass(PixelateShader);
     const colorPass = new ShaderPass(ColorCorrectionShader);
     const vignette = new ShaderPass(VignetteShader);
-    colorPass.uniforms["addRGB"].value = new THREE.Vector3(0.2, 0, 0.4);
+    // colorPass.uniforms["addRGB"].value = new THREE.Vector3(0.2, 0, 0.4);
     pixelatePass.uniforms["resolution"].value = new THREE.Vector2(
       size.width,
       size.height,
     );
     pixelatePass.uniforms["pixelSize"].value = 5.0;
 
-    vignette.uniforms["darkness"].value = 2.5;
+    vignette.uniforms["darkness"].value = 1.2;
 
     composer.current = new EffectComposer(gl, renderTarget);
     composer.current.addPass(new RenderPass(scene, camera));
     composer.current.addPass(pixelatePass);
-    composer.current.addPass(colorPass);
+    // composer.current.addPass(colorPass);
     composer.current.addPass(vignette);
 
     return () => {

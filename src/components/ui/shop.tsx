@@ -5,7 +5,6 @@ interface ShopItemProps {
   currentAmount: number;
   name: string;
   price: number;
-  stats: {};
 }
 interface KeyProps extends ShopItemProps {
   key: number;
@@ -20,7 +19,7 @@ function ShopItem({ currentAmount, name, price }: KeyProps) {
   const sellPrice = price * 0.7;
 
   return (
-    <div className="flex flex-row justify-between p-1 group hover:bg-retropink m-2 items-center ">
+    <div className="flex flex-row justify-between p-1 group hover:bg-retropink m-2 items-center">
       <div className="flex flex-row justify-start items-center gap-10">
         <p className="font-pressstart text-white">{currentAmount}x</p>
         <div className="flex flex-col  max-w-[300px]">
