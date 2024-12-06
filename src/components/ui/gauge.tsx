@@ -19,21 +19,19 @@ export function Gauge({ color, percentage, label }: GaugeProps) {
   for (let i = 0; i < nbBars; i++) {
     switch (color) {
       case "green":
-        bars.push(<div className={`h-4 flex-1 bg-retrogreen`}></div>);
+        bars.push(<div key={`filled-green-${i}`} className={`h-4 flex-1 bg-retrogreen`}></div>);
         break;
       case "blue":
-        bars.push(<div className={`h-4 flex-1 bg-retroblue`}></div>);
+        bars.push(<div key={`filled-blue-${i}`} className="h-4 flex-1 bg-retroblue"></div>);
         break;
       default:
-        bars.push(<div className={`h-4 flex-1 bg-retropink`}></div>);
+        bars.push(<div key={`filled-pink-${i}`} className="h-4 flex-1 bg-retropink"></div>);
         break;
     }
   }
 
   for (let k = 0; k < 10 - nbBars; k++) {
-    bars.push(
-      <div key={`empty-${k}`} className="h-4 flex-1 bg-transparent"></div>,
-    );
+    bars.push(<div key={`empty-${k}`} className="h-4 flex-1 bg-transparent"></div>);
   }
   return (
     <TooltipProvider>
