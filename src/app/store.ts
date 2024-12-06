@@ -1,10 +1,16 @@
+import gameTchaReducer from '@/features/flaky-fish/gameTchaSlice'
+import flakyFishReducer from '@/features/flaky-fish/flakyFishSlice'
+import flakyCoralReducer from '@/features/flaky-fish/flakyCoralSlice'
 import { configureStore } from '@reduxjs/toolkit'
 import counterReducer from '../features/counter/counterSlice'
 import autoClickerMiddleware from '@/features/counter/autoClicker'
 
 export const store = configureStore({
     reducer: {
-        counter: counterReducer
+        counter: counterReducer,
+        gameTcha: gameTchaReducer,
+        flakyFish: flakyFishReducer,
+        flakyCoral: flakyCoralReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(autoClickerMiddleware),
 })
