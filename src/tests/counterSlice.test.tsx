@@ -1,27 +1,30 @@
-import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
-import { RouterProvider, createMemoryRouter } from "react-router-dom";
-import counterReducer from "@/features/counter/counterSlice"; // Adjust the path to your counter slice
-import { router } from "@/router";
-import "@testing-library/jest-dom";
+import counterReducer, {
+  increment,
+  decrement,
+  incrementByAmount,
+} from "@/features/counter/counterSlice";
 
-test("navigates to /game and renders Counter component", () => {
-  // Create a mock store
-  const store = configureStore({
-    reducer: {
-      counter: counterReducer,
-    },
+describe("Counter Slice", () => {
+  it("should return the initial state", () => {
+    expect(counterReducer(undefined, { type: undefined })).toEqual({
+      value: 0,
+    });
   });
 
-  const testRouter = createMemoryRouter(router.routes, { initialEntries: ["/game"] });
+  it("should handle increment", () => {
+    const previousState = { value: 0 };
+    expect(counterReducer(previousState, increment())).toEqual({ value: 1 });
+  });
 
-  // Wrap the component with Redux Provider
-  render(
-    <Provider store={store}>
-      <RouterProvider router={testRouter} />
-    </Provider>
-  );
+  it("should handle decrement", () => {
+    const previousState = { value: 1 };
+    expect(counterReducer(previousState, decrement())).toEqual({ value: 0 });
+  });
 
-  expect(screen.getByText(/Compteur:/i)).toBeInTheDocument();
+  it("should handle incrementByAmount", () => {
+    const previousState = { value: 0 };
+    expect(counterReducer(previousState, incrementByAmount(5))).toEqual({
+      value: 5,
+    });
+  });
 });

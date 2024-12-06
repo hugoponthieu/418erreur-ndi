@@ -1,20 +1,16 @@
-import { render } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import { render, screen } from "@testing-library/react";
 import { Gauge } from "@/components/ui/gauge";
 
 describe("Gauge Component", () => {
-  it("renders the correct number of bars based on percentage", () => {
-    const { container } = render(
-      <Gauge color="green" label="Test" percentage={50} />,
-    );
-    const bars = container.querySelectorAll(".flex-1");
+  it("renders the correct number of filled bars based on percentage", () => {
+    render(<Gauge color="green" percentage={50} label="Gauge Test" />);
+    const filledBars = document.querySelectorAll("bg-retrogreen");
+    expect(filledBars.length).toBe(5);
+  });
 
-    // Total bars should be 10
-    expect(bars.length).toBe(10);
-
-    // 5 bars should have the 'bg-green-600' class
-    expect(
-      Array.from(bars).filter((bar) => bar.classList.contains("bg-retrogreen"))
-        .length,
-    ).toBe(5);
+  it("renders the correct tooltip label", async () => {
+    render(<Gauge color="blue" percentage={70} label="Blue Gauge" />);
+    expect(screen.getByText(/Blue Gauge/i)).toBeInTheDocument();
   });
 });

@@ -1,19 +1,55 @@
+import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import userEvent from "@testing-library/user-event";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 describe("Dialog Component", () => {
-  it("renders correctly when open", () => {
+  it("renders the dialog when open", () => {
     render(
-      <Dialog open={true}>
+      <Dialog open>
         <DialogContent>
-          <DialogTitle>Test Dialog</DialogTitle>
-          <DialogDescription>This is a description of the dialog</DialogDescription>
-          <p>Dialog content goes here</p>
+          <DialogTitle>Dialog Title</DialogTitle>
+          <DialogDescription>Dialog Description</DialogDescription>
         </DialogContent>
       </Dialog>
     );
 
-    expect(screen.getByText("Test Dialog")).toBeInTheDocument();
-    expect(screen.getByText("Dialog content goes here")).toBeInTheDocument();
+    expect(screen.getByText(/Dialog Title/i)).toBeInTheDocument();
+    expect(screen.getByText(/Dialog Description/i)).toBeInTheDocument();
+  });
+
+  it("does not render when closed", () => {
+    render(
+      <Dialog open={false}>
+        <DialogContent>
+          <DialogTitle>Dialog Title</DialogTitle>
+          <DialogDescription>Dialog Description</DialogDescription>
+        </DialogContent>
+      </Dialog>
+    );
+
+    expect(screen.queryByText(/Dialog Title/i)).not.toBeInTheDocument();
+  });
+
+  it("calls the onClose callback when the close button is clicked", async () => {
+    const mockHandler = jest.fn();
+    render(
+      <Dialog open onOpenChange={mockHandler}>
+        <DialogContent>
+          <DialogTitle>Dialog Title</DialogTitle>
+          <DialogDescription>Dialog Description</DialogDescription>
+        </DialogContent>
+      </Dialog>
+    );
+
+    const closeButton = screen.getByRole("button", { name: /Close/i });
+    await userEvent.click(closeButton);
+
+    expect(mockHandler).toHaveBeenCalledTimes(1);
   });
 });
