@@ -28,5 +28,5 @@ jobs:
     - name: ⚙️ Generating coverage badges
       uses: jpb06/coverage-badges-action@latest
       with:
-        branches: main,test-badge
+        branches: main
         badges-icon: jest
