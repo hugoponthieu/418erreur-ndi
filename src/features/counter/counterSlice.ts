@@ -6,6 +6,9 @@ import type { RootState } from "@/app/store.ts";
 
 export interface CounterState {
   value: number;
+  toxicity: number;
+  overfishing: number;
+  temperature: number;
   autoClickers: number;
   isAutoClickerRunning: boolean;
   buttons: Button[];
@@ -20,6 +23,9 @@ interface Button {
 
 const initialState: CounterState = {
   value: 10,
+  toxicity: 1,
+  overfishing: 0,
+  temperature: 0,
   autoClickers: 0,
   isAutoClickerRunning: false,
   scaleCoeff: 1,
@@ -46,16 +52,34 @@ export const counterSlice = createSlice({
           (button) => button.id != action.payload,
         );
         setTimeout(() => {
-            state.buttons.push({
-                id: uuidv4(),
-                show: true,
-                position: {
-                    top: Math.random() * (window.innerHeight - 50),
-                    left: Math.random() * (window.innerWidth - 100),
-                },
-            });
+          state.buttons.push({
+            id: uuidv4(),
+            show: true,
+            position: {
+              top: Math.random() * (window.innerHeight - 50),
+              left: Math.random() * (window.innerWidth - 100),
+            },
+          });
         }, 1000);
       }
+    },
+    incrementToxicity: (state) => {
+      if (state.toxicity > 100) {
+        return;
+      }
+      state.toxicity += 10;
+    },
+    incrementOverfishing: (state) => {
+      if (state.overfishing > 100) {
+        return;
+      }
+      state.overfishing += 10;
+    },
+    incrementTemperature: (state) => {
+      if (state.temperature > 100) {
+        return;
+      }
+      state.temperature += 10;
     },
     decrement: (state, action) => {
       state.value -= action.payload;
@@ -106,6 +130,9 @@ export const {
   autoClick,
   removeButton,
   respawnButton,
+  incrementToxicity,
+  incrementOverfishing,
+  incrementTemperature,
 } = counterSlice.actions;
 
 export const selectCount = (state: RootState) => state.counter.value;
