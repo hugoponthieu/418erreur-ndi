@@ -14,9 +14,11 @@ import {
   incrementToxicity,
 } from "@/features/counter/counterSlice";
 import { RootState } from "@/app/store";
+import { OldDialog } from "@/components/ui/old-dialog";
 
 export function Game() {
   const [plastic, setPlastic] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
 
   const toxicity = useAppSelector((state) => state.counter.toxicity);
   const temperature = useAppSelector((state) => state.counter.temperature);
@@ -40,9 +42,21 @@ export function Game() {
     }, 5000);
   }, []);
 
+  useEffect(() => {
+    if (toxicity >= 100 || temperature >= 100 || overfishing >= 100) {
+      setGameOver(true);
+    }
+  }, [toxicity, temperature, overfishing]);
+
   return (
     <div className="h-screen">
       <div className="z-10 bg-transparent absolute right-5 top-5 flex flex-col gap-5">
+        <OldDialog header="Game Over" isDialogOpen={gameOver}>
+          <p className="font-pressstart">
+            You lost the game because the ocean is too toxic, too hot and there is too much
+            overfishing. You can try again by refreshing the page.
+          </p>
+        </OldDialog>
         <ShopTable
           title="ANTI-TOXICITY"
           items={[
