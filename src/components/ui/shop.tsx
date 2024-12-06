@@ -5,6 +5,7 @@ interface ShopItemProps {
   currentAmount: number;
   name: string;
   price: number;
+  stats: {};
 }
 interface KeyProps extends ShopItemProps {
   key: number;
