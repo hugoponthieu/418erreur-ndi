@@ -1,93 +1,112 @@
-import { Button } from '@/components/ui/button';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import type { RootState } from '@/app/store.ts'
+import { Button } from "@/components/ui/button";
+import { v4 as uuidv4 } from "uuid";
+
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { RootState } from "@/app/store.ts";
+import { randomUUID } from "crypto";
 
 export interface CounterState {
-    value: number
-    autoClickers: number;
-    isAutoClickerRunning: boolean;
-    buttons: Button[];
+  value: number;
+  autoClickers: number;
+  isAutoClickerRunning: boolean;
+  buttons: Button[];
+  scaleCoeff: number;
 }
 
 interface Button {
-    id: number;
-    show: boolean;
-    position: { top: number; left: number };
+  id: string;
+  show: boolean;
+  position: { top: number; left: number };
 }
 
 const initialState: CounterState = {
-    value: 0,
-    autoClickers: 0,
-    isAutoClickerRunning: false,
-    buttons: [
-        {
-            id: 1,
-            show: true,
-            position: {
-                top: Math.random() * (window.innerHeight - 50),
-                left: Math.random() * (window.innerWidth - 100),
-            },
-        },
-    ],
-}
+  value: 10,
+  autoClickers: 0,
+  isAutoClickerRunning: false,
+  scaleCoeff: 1,
+  buttons: [
+    {
+      id: uuidv4(),
+      show: true,
+      position: {
+        top: Math.random() * (window.innerHeight - 50),
+        left: Math.random() * (window.innerWidth - 100),
+      },
+    },
+  ],
+};
 
 export const counterSlice = createSlice({
-    name: 'counter',
-    initialState,
-    reducers: {
-        increment: state => {
-            state.value += 1
+  name: "counter",
+  initialState,
+  reducers: {
+    increment: (state, action: PayloadAction<string>) => {
+      state.value += 1;
+      for (let i = 0; i < state.scaleCoeff; i++) {
+        state.buttons = state.buttons.filter(
+          (button) => button.id != action.payload,
+        );
+        state.buttons.push({
+          id: uuidv4(),
+          show: true,
+          position: {
+            top: Math.random() * (window.innerHeight - 50),
+            left: Math.random() * (window.innerWidth - 100),
+          },
+        });
+      }
+    },
+    decrement: (state, action) => {
+      state.value -= action.payload;
+    },
+    incrementByAmount: (state, action: PayloadAction<number>) => {
+      state.value += action.payload;
+    },
+    addAutoClicker: (state) => {
+      state.autoClickers += 1;
+    },
+    startAutoClickers: (state) => {
+      state.isAutoClickerRunning = true;
+    },
+    stopAutoClickers: (state) => {
+      state.isAutoClickerRunning = false;
+    },
+    autoClick: (state) => {
+      state.value += state.autoClickers;
+    },
+    removeButton: (state, action: PayloadAction<string>) => {
+      const buttonIndex = state.buttons.findIndex(
+        (b) => b.id === action.payload,
+      );
+      if (buttonIndex !== -1) {
+        state.buttons[buttonIndex].show = false;
+      }
+    },
+    respawnButton: (state) => {
+      state.buttons.push({
+        id: uuidv4(),
+        show: true,
+        position: {
+          top: Math.random() * (window.innerHeight - 50),
+          left: Math.random() * (window.innerWidth - 100),
         },
-        decrement: (state, action) => {
-            state.value -= action.payload
-        },
-        incrementByAmount: (state, action: PayloadAction<number>) => {
-            state.value += action.payload
-        },
-        addAutoClicker: (state) => {
-            state.autoClickers += 1;
-        },
-        startAutoClickers: (state) => {
-            state.isAutoClickerRunning = true;
-        },
-        stopAutoClickers: (state) => {
-            state.isAutoClickerRunning = false;
-        },
-        autoClick: (state) => {
-            state.value += state.autoClickers;
-        },
-        removeButton: (state, action: PayloadAction<number>) => {
-            const buttonIndex = state.buttons.findIndex((b) => b.id === action.payload);
-            if (buttonIndex !== -1) {
-              state.buttons[buttonIndex].show = false;
-            }
-        },
-        respawnButton: (state) => {
-            const newId = Math.max(...state.buttons.map((b) => b.id)) + 1;
-            state.buttons.push({
-              id: newId,
-              show: true,
-              position: {
-                top: Math.random() * (window.innerHeight - 50),
-                left: Math.random() * (window.innerWidth - 100),
-              },
-            });
-        },
-    }
-})
+      });
+    },
+  },
+});
 
-export const { 
-    increment, 
-    decrement, 
-    incrementByAmount, 
-    addAutoClicker,
-    startAutoClickers,
-    stopAutoClickers,
-    autoClick,
-    removeButton,
-    respawnButton,    
-} = counterSlice.actions
+export const {
+  increment,
+  decrement,
+  incrementByAmount,
+  addAutoClicker,
+  startAutoClickers,
+  stopAutoClickers,
+  autoClick,
+  removeButton,
+  respawnButton,
+} = counterSlice.actions;
 
-export const selectCount = (state: RootState) => state.counter.value
+export const selectCount = (state: RootState) => state.counter.value;
 
-export default counterSlice.reducer
+export default counterSlice.reducer;

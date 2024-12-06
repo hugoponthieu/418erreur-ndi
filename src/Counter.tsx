@@ -23,25 +23,10 @@ export function Counter() {
   const startTimeRef = useRef(Date.now());
   const [gameTime, setGameTime] = useState(0);
   const autoClickers = useAppSelector(
-    (state: RootState) => state.counter.autoClickers
+    (state: RootState) => state.counter.autoClickers,
   );
 
-  const [buttons, setButtons] = useState<
-    Array<{
-      id: number;
-      show: boolean;
-      position: { top: number; left: number };
-    }>
-  >([
-    {
-      id: 1,
-      show: true,
-      position: {
-        top: Math.random() * (window.innerHeight - 50),
-        left: Math.random() * (window.innerWidth - 100),
-      },
-    },
-  ]);
+  const buttons = useAppSelector((state: RootState) => state.counter.buttons);
 
   const [shopItems, setShopItems] = useState<ShopItem[]>([
     {
