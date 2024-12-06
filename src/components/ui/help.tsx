@@ -3,12 +3,19 @@ import { RetroButton } from "./button";
 import { Dialog, DialogTrigger } from "./dialog";
 import { RetroDialog } from "./retro-dialog";
 
-export function HelpButton() {
+interface HelpButtonProps {
+  withLabel?: string;
+}
+
+export function HelpButton({ withLabel }: HelpButtonProps) {
   return (
     <Dialog>
       <DialogTrigger className="cursor-help" asChild>
         <RetroButton legend="Instructions">
           <InfoIcon size={32} color="black" />
+          {withLabel && (
+            <p className="font-pressstart text-black">{withLabel}</p>
+          )}
         </RetroButton>
       </DialogTrigger>
       <RetroDialog
