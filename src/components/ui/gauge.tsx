@@ -61,24 +61,24 @@ export function Gauge({ color, percentage, label, informations }: GaugeProps) {
     );
   }
   return (
-    <Dialog>
-      <DialogTrigger className="cursor-help" asChild>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <Dialog>
+            <DialogTrigger className="cursor-help" asChild>
               <div className="pixel-border-white border-red w-fit">
                 <div className="flex flex-row w-[100px] gap-[2px] justify-start p-1">
                   {bars.map((bar) => bar)}
                 </div>
               </div>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p className="font-pressstart text-xs">{label}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </DialogTrigger>
-      <RetroDialog informations={informations} />
-    </Dialog>
+            </DialogTrigger>
+            <RetroDialog informations={informations} />
+          </Dialog>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p className="font-pressstart text-xs">{label}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
