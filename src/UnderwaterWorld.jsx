@@ -23,7 +23,7 @@ const UnderwaterWorld = memo((props) => {
   const fishModels = [
     { name: "./goldfish.glb", scale: [0.5, 0.5, 0.5] },
     { name: "./koi.glb", scale: [0.1, 0.1, 0.1] },
-    { name: "./bigGrey.glb", scale: [1, 1, 1] },
+    // { name: "./bigGrey.glb", scale: [ 0.5, 0.5, 0.5,] },
     { name: "./sharky.glb", scale: [3, 3, 3] },
     // { name: "./littlePink.glb", scale: [0.01, 0.01, 0.01] },
   ]; // Add your GLB files here
@@ -101,19 +101,16 @@ function Ocean() {
   return <group ref={waterRef} />;
 }
 
-function RoamingFish({ modelFiles, position }) {
-  if (!modelFiles) {
-    return;
+function RoamingFish({ fish , allFishes, index}) {
+  if (!fish){
+    return
   }
   const fishRef = useRef();
   const { camera } = useThree(); // Get the camera from the scene
-  const [targetPosition, setTargetPosition] = useState(
-    new THREE.Vector3(position[0], position[1], position[2]),
-  );
-  const randomModel = modelFiles[Math.floor(Math.random() * modelFiles.length)];
+  const [targetPosition, setTargetPosition] = useState(new THREE.Vector3(fish.position[0], fish.position[1], fish.position[2]));
 
   // Load the GLTF model
-  const { scene } = useGLTF(randomModel.name); // Replace with your GLB model
+  const { scene } = useGLTF(fish.model.name); // Replace with your GLB model
 
   // Update fish's target position around the camera
   useEffect(() => {
@@ -140,7 +137,7 @@ function RoamingFish({ modelFiles, position }) {
     ); // Random interval between 1s to 3s
 
     return () => clearInterval(interval);
-  }, [camera.position]);
+  }, []);
 
   useFrame((state, delta) => {
     if (fishRef.current) {
@@ -149,6 +146,7 @@ function RoamingFish({ modelFiles, position }) {
         targetPosition,
         fishRef.current.position,
       );
+      allFishes.current[index].position = [targetPosition.x, targetPosition.y, targetPosition.z];
       const distance = direction.length();
 
       // Move the fish towards the target position
@@ -168,48 +166,35 @@ function RoamingFish({ modelFiles, position }) {
   });
 
   return (
-    <primitive
-      ref={fishRef}
-      object={scene.clone()}
-      position={new THREE.Vector3(position[0], position[1], position[2])}
-      scale={
-        new THREE.Vector3(
-          randomModel.scale[0],
-          randomModel.scale[1],
-          randomModel.scale[2],
-        )
-      }
-    />
+    <primitive ref={fishRef} object={scene.clone()} position={new THREE.Vector3(fish.position[0],fish.position[1],fish.position[2])} scale={new THREE.Vector3(fish.model.scale[0], fish.model.scale[1], fish.model.scale[2])} />
   );
 }
 
 function InfiniteFish({ fishModels }) {
+  if (!fishModels){
+    return
+  }
   const overfishing = useAppSelector((state) => state.counter.overfishing);
   const MAX_FISH = 10;
-  const fishPositions = useState(
-    Array.from({ length: MAX_FISH }, () => [
-      Math.random() * 1200 - 600, // Random X position within range
-      Math.random() * 5 - 5, // Random Y position within range
-      Math.random() * 100 - 50, // Random Z position within range
-    ]),
-  )[0];
+  const fishPositions = useRef(Array.from(
+          { length: MAX_FISH },
+          () => {return{
+            position: [
+              Math.random() * 300 - 150, // Random X position within range
+              Math.random() * 10 -25, // Random Y position within range
+              Math.random() * 100 - 50, // Random Z position within range
+            ],
+            model: fishModels ? fishModels[Math.floor(Math.random() * fishModels.length)] : null,
+          }}
+      ));
 
-  console.log(fishPositions);
+  console.log(fishPositions)
   return (
-    <>
-      {fishPositions
-        .filter(
-          (_, index) =>
-            index < MAX_FISH - Math.floor((overfishing / 100) * MAX_FISH),
-        )
-        .map((position, index) => (
-          <RoamingFish
-            modelFiles={fishModels}
-            position={position}
-            key={index}
-          />
+      <>
+        {fishModels && fishPositions.current.filter((_, index) => index < MAX_FISH - Math.floor((overfishing / 100) * MAX_FISH)).map((fish, index) => (
+            <RoamingFish fish={fish}  key={index} allFishes={fishPositions} index={index}/>
         ))}
-    </>
+      </>
   );
 }
 
