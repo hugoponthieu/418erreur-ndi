@@ -194,6 +194,9 @@ function BottleController({ increment }) {
     setBottles(initialBottles);
 
     const interval = setInterval(() => {
+      if (bottles.length > 30) {
+        return;
+      }
       setBottles((prevBottles) => [
         ...prevBottles,
         {

@@ -48,8 +48,8 @@ export function Game() {
           items={[
             {
               name: "AGC 3000",
-              currentAmount: 1,
-              price: 10,
+              currentAmount: autoClickers,
+              price: 10*Math.pow(2, autoClickers),
               informations: {
                 title: "The auto-garbage collector 3000",
                 description:
@@ -78,8 +78,8 @@ export function Game() {
           items={[
             {
               name: "Seagrasses",
-              currentAmount: autoClickers,
-              price: 10*Math.pow(2, autoClickers),
+              currentAmount: 1,
+              price: 10,
               informations: {
                 title: "Seagrasses",
                 description:
