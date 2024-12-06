@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "@/app/store.ts";
-import { randomUUID } from "crypto";
 
 export interface CounterState {
   value: number;
@@ -46,14 +45,16 @@ export const counterSlice = createSlice({
         state.buttons = state.buttons.filter(
           (button) => button.id != action.payload,
         );
-        state.buttons.push({
-          id: uuidv4(),
-          show: true,
-          position: {
-            top: Math.random() * (window.innerHeight - 50),
-            left: Math.random() * (window.innerWidth - 100),
-          },
-        });
+        setTimeout(() => {
+            state.buttons.push({
+                id: uuidv4(),
+                show: true,
+                position: {
+                    top: Math.random() * (window.innerHeight - 50),
+                    left: Math.random() * (window.innerWidth - 100),
+                },
+            });
+        }, 1000);
       }
     },
     decrement: (state, action) => {

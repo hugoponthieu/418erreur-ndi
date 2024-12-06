@@ -3,9 +3,9 @@ import {
   addAutoClicker,
   decrement,
   increment,
+  respawnButton,
   startAutoClickers,
 } from "@/features/counter/counterSlice.ts";
-import autoClicker from "@/features/counter/autoClicker";
 import { useAppDispatch, useAppSelector } from "@/app/hooks.ts";
 import { RootState } from "@/app/store.ts";
 
@@ -43,6 +43,9 @@ export function Counter() {
     const timer = setInterval(() => {
       const currentTime = Date.now();
       setGameTime(Math.floor((currentTime - startTimeRef.current) / 1000));
+      if (gameTime % 10 === 0) {
+        dispatch(respawnButton())
+      }
     }, 1000);
 
     return () => clearInterval(timer);
