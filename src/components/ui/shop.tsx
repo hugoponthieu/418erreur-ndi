@@ -1,6 +1,9 @@
 import {
   addAutoClicker,
   decrement,
+  increment,
+  resetOverfishing,
+  resetTemperature,
   startAutoClickers,
 } from "@/features/counter/counterSlice";
 import { useState } from "react";
@@ -35,16 +38,25 @@ interface ShopTableProps {
 }
 
 function ShopItem({ currentAmount, name, price, informations }: KeyProps) {
-  const sellPrice = price * 0.7;
   const count = useAppSelector((state: RootState) => state.counter.value);
   const dispatch = useAppDispatch();
 
   const buyItem = () => {
     if (count >= price) {
-      // Déduire le prix
       dispatch(decrement(price));
-      dispatch(addAutoClicker());
-      dispatch(startAutoClickers());
+      if (name === "AGC 3000") {
+        dispatch(addAutoClicker());
+        dispatch(startAutoClickers());
+      } else if (name === "ANTI FISHER M*lware") {
+        setInterval(() => {
+          console.log("resetting");
+          dispatch(resetOverfishing());
+        });
+      } else if (name === "Seagrasses") {
+        setInterval(() => {
+          dispatch(resetTemperature());
+        });
+      }
     }
   };
   return (

@@ -80,7 +80,7 @@ export function Game() {
             {
               name: "ANTI FISHER M*lware",
               currentAmount: 1,
-              price: 10,
+              price: 30,
               informations: {
                 title: "Anti fisher m*lware",
                 description:
@@ -95,7 +95,7 @@ export function Game() {
             {
               name: "Seagrasses",
               currentAmount: 1,
-              price: 10,
+              price: 50,
               informations: {
                 title: "Seagrasses",
                 description:
