@@ -80,7 +80,7 @@ const RetroButton = React.forwardRef<HTMLButtonElement, RetroButtonProps>(
           particleCount: 3,
           startVelocity: 10,
           spread: 100,
-          // flat: true,
+          flat: true,
           scalar: 2,
           disableForReducedMotion: true,
           shapes: [plus_one],
