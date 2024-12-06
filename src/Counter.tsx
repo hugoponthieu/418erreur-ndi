@@ -1,5 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import { decrement, increment } from "@/features/counter/counterSlice.ts";
+import {
+  addAutoClicker,
+  decrement,
+  increment,
+  startAutoClickers,
+} from "@/features/counter/counterSlice.ts";
+import autoClicker from "@/features/counter/autoClicker";
 import { useAppDispatch, useAppSelector } from "@/app/hooks.ts";
 import { RootState } from "@/app/store.ts";
 import { ShopTable } from "./components/ui/shop";
@@ -17,6 +23,9 @@ export function Counter() {
 
   const startTimeRef = useRef(Date.now());
   const [gameTime, setGameTime] = useState(0);
+  const autoClickers = useAppSelector(
+    (state: RootState) => state.counter.autoClickers
+  );
 
   const [buttons, setButtons] = useState<
     Array<{
@@ -38,10 +47,15 @@ export function Counter() {
   const [shopItems, setShopItems] = useState<ShopItem[]>([
     {
       id: 1,
-      name: "Bouton Speed Boost",
+      name: "Get AutoClicker",
       price: 10,
       effect: () => {
+<<<<<<< HEAD
         // Réduire le temps d'apparition des boutons
+=======
+        dispatch(addAutoClicker());
+        dispatch(startAutoClickers());
+>>>>>>> c0acd5f (feat: implement auto-clicker functionality and integrate with Counter component)
       },
     },
   ]);
@@ -60,8 +74,13 @@ export function Counter() {
 
     setButtons((prevButtons) =>
       prevButtons.map((button) =>
+<<<<<<< HEAD
         button.id === buttonId ? { ...button, show: false } : button,
       ),
+=======
+        button.id === buttonId ? { ...button, show: false } : button
+      )
+>>>>>>> c0acd5f (feat: implement auto-clicker functionality and integrate with Counter component)
     );
 
     setTimeout(() => {
@@ -79,14 +98,18 @@ export function Counter() {
           .map((button) =>
             button.id === buttonId
               ? {
-                  ...button,
-                  show: true,
-                  position: {
-                    top: Math.random() * (window.innerHeight - 50),
-                    left: Math.random() * (window.innerWidth - 100),
-                  },
-                }
+                ...button,
+                show: true,
+                position: {
+                  top: Math.random() * (window.innerHeight - 50),
+                  left: Math.random() * (window.innerWidth - 100),
+                },
+              }
+<<<<<<< HEAD
               : button,
+=======
+              : button
+>>>>>>> c0acd5f (feat: implement auto-clicker functionality and integrate with Counter component)
           )
           .concat(newButton);
       });
@@ -106,6 +129,7 @@ export function Counter() {
       <div style={{ flex: 2, position: "relative" }}>
         <h1>Compteur: {count}</h1>
         <p>Temps de jeu: {gameTime} secondes</p>
+        <p>AutoClickers : {autoClickers}</p>
         {buttons.map(
           (button) =>
             button.show && (
@@ -120,7 +144,7 @@ export function Counter() {
               >
                 Incrémenter {button.id}
               </button>
-            ),
+            )
         )}
       </div>
 
