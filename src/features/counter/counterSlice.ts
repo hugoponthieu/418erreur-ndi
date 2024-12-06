@@ -86,6 +86,12 @@ export const counterSlice = createSlice({
       state.value -= action.payload;
       state.toxicity -= 2;
     },
+    resetOverfishing: (state) => {
+      state.overfishing = 0;
+    },
+    resetTemperature: (state) => {
+      state.temperature = 0;
+    },
     incrementByAmount: (state, action: PayloadAction<number>) => {
       state.value += action.payload;
     },
@@ -131,6 +137,8 @@ export const {
   startAutoClickers,
   stopAutoClickers,
   autoClick,
+  resetOverfishing,
+  resetTemperature,
   removeButton,
   respawnButton,
   incrementToxicity,

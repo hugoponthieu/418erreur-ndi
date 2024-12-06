@@ -11,7 +11,6 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import {
   incrementOverfishing,
   incrementTemperature,
-  incrementToxicity,
 } from "@/features/counter/counterSlice";
 import { RootState } from "@/app/store";
 import { OldDialog } from "@/components/ui/old-dialog";
@@ -80,7 +79,7 @@ export function Game() {
             {
               name: "ANTI FISHER M*lware",
               currentAmount: 1,
-              price: 10,
+              price: 30,
               informations: {
                 title: "Anti fisher m*lware",
                 description:
@@ -95,7 +94,7 @@ export function Game() {
             {
               name: "Seagrasses",
               currentAmount: 1,
-              price: 10,
+              price: 50,
               informations: {
                 title: "Seagrasses",
                 description:
