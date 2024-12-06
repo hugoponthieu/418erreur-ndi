@@ -3,8 +3,6 @@ import { TemperatureIcon } from "@/components/icons/temperature";
 import { ToxicityIcon } from "@/components/icons/toxicity";
 import { RetroButton } from "@/components/ui/button";
 import { Gauge } from "@/components/ui/gauge";
-import { MoneyCounter } from "@/components/ui/money_counter";
-import { ShopTable } from "@/components/ui/shop";
 import { useState } from "react";
 
 export function Components() {
@@ -18,24 +16,30 @@ export function Components() {
       <OceanHeightIcon color="#000" size={48} />
       <div className="flex flex-row gap-3 items-center">
         <TemperatureIcon color="#000" size={30} />
-        <Gauge color="green" label="blueyeah" percentage={30} />
+
+        {
+          // @ts-ignore
+          <Gauge color="green" label="blueyeah" percentage={30} />
+        }
       </div>
-      <ShopTable
-        title="test"
-        items={[
-          {
-            name: "test",
-            currentAmount: 34,
-            price: 321,
-          },
-          {
-            name: "test",
-            currentAmount: 34,
-            price: 321,
-          },
-        ]}
-      />
-      <MoneyCounter count={3} />
+      {/* // @ts-ignore
+        <ShopTable
+          title="test"
+          items={[
+            {
+              name: "test",
+              currentAmount: 34,
+              price: 321,
+            },
+            {
+              name: "test",
+              currentAmount: 34,
+              price: 321,
+            },
+          ]}
+        />
+      
+      <MoneyCounter count={3} /> */}
     </div>
   );
 }

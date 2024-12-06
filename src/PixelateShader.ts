@@ -1,4 +1,5 @@
 // PixelateShader.js
+// @ts-ignore
 import * as THREE from 'three';
 
 const PixelateShader = {

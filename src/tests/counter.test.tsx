@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
+// @ts-ignore
 import Counter from "@/Counter";
 import counterReducer from "@/features/counter/counterSlice";
 

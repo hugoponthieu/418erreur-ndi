@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Informations } from "@/lib/infos";
 import { MoneyIcon } from "../icons/money";
 import { RetroButton } from "./button";
@@ -23,7 +23,7 @@ interface ShopTableProps {
 }
 
 function ShopItem({ currentAmount, name, price, informations }: KeyProps) {
-  const sellPrice = price * 0.7;
+  // const sellPrice = price * 0.7;
 
   return (
     <div className="flex flex-row justify-between p-1 group hover:bg-retropink m-2 items-center">

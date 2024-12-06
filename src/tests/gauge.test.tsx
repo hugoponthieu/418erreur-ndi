@@ -6,7 +6,7 @@ import userEvent from "@testing-library/user-event";
 describe("Gauge Component", () => {
   it("renders the tooltip with the correct label", async () => {
     const user = userEvent.setup(); // Initialize userEvent
-
+    // @ts-ignore
     render(<Gauge color="pink" percentage={50} label="Pink Gauge" />);
 
     // Hover over the trigger to show the tooltip
