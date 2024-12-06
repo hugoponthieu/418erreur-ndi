@@ -1,11 +1,5 @@
 import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog-no-closed";
 import { Button } from "@/components/ui/button";
 import "./App.css";
 import { useNavigate } from "react-router";

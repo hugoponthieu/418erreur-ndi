@@ -15,7 +15,7 @@ const autoClickerMiddleware: Middleware = (store) => {
       if (intervalId === null) {
         intervalId = setInterval(() => {
           const state = store.getState();
-          const { autoClickers, buttons } = state.counter;
+          const { buttons } = state.counter;
 
           // Trouver un bouton visible
           const visibleButton = buttons.find(
