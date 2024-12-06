@@ -108,6 +108,7 @@ function RoamingFish({ fish , allFishes, index}) {
   const fishRef = useRef();
   const { camera } = useThree(); // Get the camera from the scene
   const [targetPosition, setTargetPosition] = useState(new THREE.Vector3(fish.position[0], fish.position[1], fish.position[2]));
+  const overfishing = useAppSelector((state) => state.counter.overfishing);
 
   // Load the GLTF model
   const { scene } = useGLTF(fish.model.name); // Replace with your GLB model
@@ -138,6 +139,10 @@ function RoamingFish({ fish , allFishes, index}) {
 
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    allFishes.current[index].position = [fishRef.current.position.x, fishRef.current.position.y,fishRef.current.position.z];
+  }, [overfishing]);
 
   useFrame((state, delta) => {
     if (fishRef.current) {
@@ -224,17 +229,9 @@ function Bubbles() {
 
 function BottleController({ increment }) {
   const [bottles, setBottles] = useState([]);
-  const bottlesRef = useRef([]); // Keep a mutable reference to bottles
   const dispatch = useAppDispatch();
-  const autoClickers = useAppSelector(
-    (state) => state.counter.autoClickers,
-  );
+
   const { camera } = useThree();
-
-  useEffect(() => {
-    bottlesRef.current = bottles; // Sync bottles state with the ref
-  }, [bottles]);
-
   useEffect(() => {
     const generatePositionAroundCamera = () => {
       let position;
@@ -256,37 +253,28 @@ function BottleController({ increment }) {
       id: Math.random().toString(36).substring(7), // Generate a unique ID
     }));
     setBottles(initialBottles);
-    bottlesRef.current = initialBottles; // Sync initial state to ref
 
     const interval = setInterval(() => {
-      // Add new bottles
-      if (bottlesRef.current.length <= 50) {
-        dispatch(incrementToxicity());
-        const newBottle = {
+      if (bottles.length > 50) {
+        return;
+      }
+      dispatch(incrementToxicity());
+      setBottles((prevBottles) => [
+        ...prevBottles,
+        {
           position: generatePositionAroundCamera(),
-          id: Math.random().toString(36).substring(7),
-        };
-        setBottles((prevBottles) => [...prevBottles, newBottle]);
-        bottlesRef.current = [...bottlesRef.current, newBottle]; // Update ref
-      }
-
-      // Remove bottles based on autoClickers
-      if (autoClickers > 0 && bottlesRef.current.length > 0) {
-        const bottlesToRemove = Math.min(autoClickers, bottlesRef.current.length);
-        const updatedBottles = bottlesRef.current.slice(bottlesToRemove);
-        setBottles(updatedBottles);
-        bottlesRef.current = updatedBottles; // Update ref
-        console.log("Removed bottles", bottlesToRemove);
-      }
+          id: Math.random().toString(36).substring(7), // Unique ID for each bottle
+        },
+      ]);
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [camera, dispatch, autoClickers]);
+  }, [camera]);
 
   const handleRemoveBottle = (id) => {
-    const updatedBottles = bottles.filter((bottle) => bottle.id !== id);
-    setBottles(updatedBottles);
-    bottlesRef.current = updatedBottles; // Update ref
+    setBottles((prevBottles) =>
+      prevBottles.filter((bottle) => bottle.id !== id),
+    );
     increment();
   };
 
@@ -303,7 +291,6 @@ function BottleController({ increment }) {
     </>
   );
 }
-
 
 function Bottle({ position, onRemove }) {
   const bottleRef = useRef();
