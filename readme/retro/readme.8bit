@@ -1,0 +1,39 @@
+> **418Erreur** : Dorian Grasset - Benoit Planche - Pauline Contat - Dorian Têtu - Tristan-Mihai Radulescu - Hugo Ponthieu
+
+# Nuit de l'info 2024
+
+## [On veut du gros pixel ! ✨🎮👾🕹️](https://www.nuitdelinfo.com/inscription/defis/453)
+
+> Déposer ce fichier dans champ d'upload
+
+Adresse du site : https://savenemo.do-2023.fr/
+
+Adresse du repository GitHub : https://github.com/hugoponthieu/418erreur-ndi
+
+---
+
+### Explications
+
+Pas d'instructions spéciales, nous avons décidé de faire tout le site dans un univers rétro-gaming.
+Pour voir les résultats, il suffit de se rendre sur le site ou de cloner le repository localement comme expliquer dans le README.md principal du projet.
+
+### Installation
+
+Pour installer le projet, il suffit de cloner le repository de cette manière :
+
+```bash
+git clone git@github.com:hugoponthieu/418erreur-ndi.git
+```
+
+Rendez-vous ensuite dans le dossier du projet :
+
+```bash
+cd 418erreur-ndi
+```
+
+Puis, vous pouvez lancer le projet avec la commande suivante :
+
+```bash
+pnpm install
+pnpm run dev
+```

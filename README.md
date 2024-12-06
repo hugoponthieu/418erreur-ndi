@@ -1,56 +1,52 @@
-# React + TypeScript + Vite
-
 ![Branches](./badges/coverage-branches.svg)
 ![Functions](./badges/coverage-functions.svg)
 ![Lines](./badges/coverage-lines.svg)
 ![Statements](./badges/coverage-statements.svg)
 ![Coverage total](./badges/coverage-total.svg)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **418Erreur** : Dorian Grasset - Benoit Planche - Pauline Contat - Dorian Têtu - Tristan-Mihai Radulescu - Hugo Ponthieu
 
-Currently, two official plugins are available:
+# Nuit de l'info 2024
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Défis principal de la nuit
 
-## Expanding the ESLint configuration
+Nous avons décidé de créer une application web jeu vidéo (défi "On va jouer à un jeu") avec un style rétro (défi "On veut du gros pixel") dans lequel nous avons intégré un CAPTCHA ludique (défi "Game Tcha") et un système de qualité avec des tests de notre application après chaque push de code sur la branche main de notre repository (défi "Mise en place de la qualité"). Nous incarnerons un poisson dans l'océan 3D (défi "3D Social"). L'objectif était d'intégir avec des déchets pour les recycler et récupérer de l'argent. Trois métriques sont présentes sur l'écran :
+- L'acidité de l'eau
+- Le taux de déchets dans l'eau
+- La chaleur de l'eau
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+En faisant de l'argent, le joueur peut acheter des améliorations pour son poisson et ainsi augmenter ses chances de survie en baissant l'acidité de l'eau, le taux de déchets et la chaleur de l'eau.
+En fonction de la qualité des métriques, les couleurs et l'environnement de l'océan changent.
 
-- Configure the top-level `parserOptions` property like this:
+Adresse du site : https://savenemo.do-2023.fr/
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+Adresse du repository GitHub : https://github.com/hugoponthieu/418erreur-ndi
+
+## Défis secondaires de la nuit
+
+- [Game Tcha : le CAPTCHA ludique (Viveris)](./readme/captcha/README.md)
+- [On va jouer à un jeu 🪚 (IUT Info Calais)](./readme/gamification//README.md)
+- [On veut du gros pixel ! ✨🎮👾🕹️ (IUT Info Calais)](./readme/retro/readme.8bit)
+- [Mise en place de la qualité (Salvia Développement)](./readme/tests/README.md)
+- [3D Social (BluesTech)](./readme/threejs/README.md)
+
+## Installation
+
+Pour installer le projet, il suffit de cloner le repository de cette manière :
+
+```bash
+git clone git@github.com:hugoponthieu/418erreur-ndi.git
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Rendez-vous ensuite dans le dossier du projet :
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+```bash
+cd 418erreur-ndi
+```
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+Puis, vous pouvez lancer le projet avec la commande suivante :
+
+```bash
+pnpm install
+pnpm run dev
 ```
