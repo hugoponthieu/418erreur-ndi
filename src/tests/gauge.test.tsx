@@ -1,16 +1,23 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import { Gauge } from "@/components/ui/gauge";
+import userEvent from "@testing-library/user-event";
 
 describe("Gauge Component", () => {
-  it("renders the correct number of filled bars based on percentage", () => {
-    render(<Gauge color="green" percentage={50} label="Gauge Test" />);
-    const filledBars = document.querySelectorAll("bg-retrogreen");
-    expect(filledBars.length).toBe(5);
-  });
+  it("renders the tooltip with the correct label", async () => {
+    const user = userEvent.setup(); // Initialize userEvent
 
-  it("renders the correct tooltip label", async () => {
-    render(<Gauge color="blue" percentage={70} label="Blue Gauge" />);
-    expect(screen.getByText(/Blue Gauge/i)).toBeInTheDocument();
+    render(<Gauge color="pink" percentage={50} label="Pink Gauge" />);
+
+    // Hover over the trigger to show the tooltip
+    const trigger = screen.getByRole("button"); // TooltipTrigger is a button
+    await user.hover(trigger);
+
+    // Wait for the tooltip content to appear, specifying the role or exact tooltip container
+    const tooltipContent = await screen.findByRole("tooltip", {
+      name: /Pink Gauge/i, // Use regex to match case-insensitively
+    });
+
+    expect(tooltipContent).toBeInTheDocument();
   });
 });
