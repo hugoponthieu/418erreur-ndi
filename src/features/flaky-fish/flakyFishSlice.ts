@@ -17,7 +17,7 @@ export const flakyFishSlice = createSlice({
     reducers: {
         fly: (state) => {
             state.y = state.y - 30
-            state.r = -30
+            state.r = - 30
         },
         fall: (state) => {
             state.y = state.y + 20

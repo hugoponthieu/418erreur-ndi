@@ -1,16 +1,13 @@
-import { PropsWithChildren } from "react";
-import { Dialog, DialogContent, DialogHeader } from "./dialog-no-closed";
+import { PropsWithChildren } from 'react'
+import { Dialog, DialogContent, DialogHeader } from './dialog-no-closed'
+import { DialogTitle } from '@radix-ui/react-dialog'
 
 interface OldDialogProps {
-  header: string;
-  isDialogOpen: boolean;
+  header: string
+  isDialogOpen: boolean
 }
 
-export function OldDialog({
-  children,
-  isDialogOpen,
-  header,
-}: PropsWithChildren<OldDialogProps>) {
+export function OldDialog({ children, isDialogOpen, header }: PropsWithChildren<OldDialogProps>) {
   return (
     <Dialog open={isDialogOpen}>
       <DialogContent
@@ -20,9 +17,10 @@ export function OldDialog({
       >
         <DialogHeader className="bg-gradient-to-r from-[#0141BC] to-[#49A3DD] text-sm font-pressstart  flex flex-row w-full  px-4 py-1 text-white">
           {header}
+          <DialogTitle />
         </DialogHeader>
         {children}
       </DialogContent>
     </Dialog>
-  );
+  )
 }

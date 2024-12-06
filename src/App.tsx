@@ -45,7 +45,6 @@ function App() {
 
   useEffect(() => {
     if (counter === 12) {
-      console.log('test')
       setIsDialogWinOpen(false)
     } else if (counter >= 8) {
       setMessage('Making turtle eat plastic')

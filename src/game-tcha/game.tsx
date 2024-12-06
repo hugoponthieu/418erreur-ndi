@@ -70,7 +70,6 @@ export function Game({ maxScore, setWin }: GameProps) {
   };
   const scoreTime = () => {
     scoreCounter = setInterval(() => {
-      console.log("score");    
       setScore((prev) => prev + 1);
     }, 4500);
   };
@@ -118,7 +117,6 @@ export function Game({ maxScore, setWin }: GameProps) {
         clearInterval(pipeGenerator);
         clearInterval(scoreCounter);
         setScore(0);
-      } else if (120 < x1 + 52) {
       }
     }
   }, [coralState.corals, coralState.x, dispatch, fishState.y]);

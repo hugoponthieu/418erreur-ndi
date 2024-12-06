@@ -62,7 +62,7 @@ export function Gauge({ color, percentage, label, informations }: GaugeProps) {
   }
   return (
     <Dialog>
-      <DialogTrigger className="cursor-help">
+      <DialogTrigger className="cursor-help" asChild>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
