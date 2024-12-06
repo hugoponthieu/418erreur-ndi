@@ -1,4 +1,4 @@
-import React, {Suspense} from "react";
+import React, { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import FishNavigator from "./FishNavigator";
@@ -10,7 +10,11 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { Raycaster } from "three";
 import { memo } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks.ts";
-import { decrement, increment } from "@/features/counter/counterSlice.ts";
+import {
+  decrement,
+  increment,
+  incrementToxicity,
+} from "@/features/counter/counterSlice.ts";
 import * as THREE from "three";
 
 const UnderwaterWorld = memo((props) => {
@@ -103,7 +107,9 @@ function RoamingFish({ modelFiles, position }) {
   }
   const fishRef = useRef();
   const { camera } = useThree(); // Get the camera from the scene
-  const [targetPosition, setTargetPosition] = useState(new THREE.Vector3(position[0], position[1], position[2]));
+  const [targetPosition, setTargetPosition] = useState(
+    new THREE.Vector3(position[0], position[1], position[2]),
+  );
   const randomModel = modelFiles[Math.floor(Math.random() * modelFiles.length)];
 
   // Load the GLTF model
@@ -162,30 +168,48 @@ function RoamingFish({ modelFiles, position }) {
   });
 
   return (
-    <primitive ref={fishRef} object={scene.clone()} position={new THREE.Vector3(position[0],position[1],position[2])} scale={new THREE.Vector3(randomModel.scale[0], randomModel.scale[1], randomModel.scale[2])} />
+    <primitive
+      ref={fishRef}
+      object={scene.clone()}
+      position={new THREE.Vector3(position[0], position[1], position[2])}
+      scale={
+        new THREE.Vector3(
+          randomModel.scale[0],
+          randomModel.scale[1],
+          randomModel.scale[2],
+        )
+      }
+    />
   );
 }
 
 function InfiniteFish({ fishModels }) {
   const overfishing = useAppSelector((state) => state.counter.overfishing);
   const MAX_FISH = 10;
-  const fishPositions = useState(Array.from(
-          { length: MAX_FISH },
-          () => [
-            Math.random() * 1200 - 600, // Random X position within range
-            Math.random() * 5 - 5, // Random Y position within range
-            Math.random() * 100 - 50, // Random Z position within range
-          ],
-      ))[0];
-
+  const fishPositions = useState(
+    Array.from({ length: MAX_FISH }, () => [
+      Math.random() * 1200 - 600, // Random X position within range
+      Math.random() * 5 - 5, // Random Y position within range
+      Math.random() * 100 - 50, // Random Z position within range
+    ]),
+  )[0];
 
   console.log(fishPositions);
   return (
-      <>
-        {fishPositions.filter((_, index) => index < MAX_FISH - Math.floor((overfishing / 100) * MAX_FISH)).map((position, index) => (
-            <RoamingFish modelFiles={fishModels} position={position}  key={index} />
+    <>
+      {fishPositions
+        .filter(
+          (_, index) =>
+            index < MAX_FISH - Math.floor((overfishing / 100) * MAX_FISH),
+        )
+        .map((position, index) => (
+          <RoamingFish
+            modelFiles={fishModels}
+            position={position}
+            key={index}
+          />
         ))}
-      </>
+    </>
   );
 }
 
@@ -198,23 +222,24 @@ function Bubbles() {
   ]);
 
   return (
-      <>
-        {bubblePositions.map((pos, index) => (
-            <mesh key={index} position={pos}>
-              <sphereGeometry args={[0.2, 8, 8]} />
-              <meshStandardMaterial
-                  color="white"
-                  opacity={0.6}
-                  transparent={true}
-              />
-            </mesh>
-        ))}
-      </>
+    <>
+      {bubblePositions.map((pos, index) => (
+        <mesh key={index} position={pos}>
+          <sphereGeometry args={[0.2, 8, 8]} />
+          <meshStandardMaterial
+            color="white"
+            opacity={0.6}
+            transparent={true}
+          />
+        </mesh>
+      ))}
+    </>
   );
 }
 
 function BottleController({ increment }) {
   const [bottles, setBottles] = useState([]);
+  const dispatch = useAppDispatch();
 
   const { camera } = useThree();
   useEffect(() => {
@@ -240,9 +265,10 @@ function BottleController({ increment }) {
     setBottles(initialBottles);
 
     const interval = setInterval(() => {
-      if (bottles.length > 30) {
+      if (bottles.length > 50) {
         return;
       }
+      dispatch(incrementToxicity());
       setBottles((prevBottles) => [
         ...prevBottles,
         {
