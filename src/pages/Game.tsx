@@ -13,12 +13,15 @@ import {
   incrementTemperature,
   incrementToxicity,
 } from "@/features/counter/counterSlice";
+import { RootState } from "@/app/store";
 
 export function Game() {
   const [plastic, setPlastic] = useState(0);
+
   const toxicity = useAppSelector((state) => state.counter.toxicity);
   const temperature = useAppSelector((state) => state.counter.temperature);
   const overfishing = useAppSelector((state) => state.counter.overfishing);
+  const count = useAppSelector((state: RootState) => state.counter.value);
 
   const dispatch = useAppDispatch();
 
@@ -75,7 +78,7 @@ export function Game() {
           items={[
             {
               name: "Seagrasses",
-              currentAmount: 1,
+              currentAmount: count,
               price: 10,
               informations: {
                 title: "Seagrasses",
